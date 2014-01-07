@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2013/12/23 08:21:39.160.pas,C:\Users\Edwin\Documents\RAD Studio\Projects\Unit1.pas=C:\Prj\Estructuras\Migrador\Cod\uPrincipal.pas</Transaction>
+    <Transaction>2013/12/23 08:21:39.161.dfm,C:\Users\Edwin\Documents\RAD Studio\Projects\Unit1.dfm=C:\Prj\Estructuras\Migrador\Cod\uPrincipal.dfm</Transaction>
+    <Transaction>2013/12/23 08:21:51.187.dproj,C:\Users\Edwin\Documents\RAD Studio\Projects\Project2.dproj=C:\Prj\Estructuras\Migrador\Cod\SPAMigrarEstructuras.dproj</Transaction>
+    <Transaction>2013/12/26 09:42:44.418.pas,C:\Prj\Estructuras\Migrador\Cod\Unit1.pas=C:\Prj\Estructuras\Migrador\Cod\uDatos.pas</Transaction>
+    <Transaction>2013/12/26 09:42:44.418.dfm,C:\Prj\Estructuras\Migrador\Cod\Unit1.dfm=C:\Prj\Estructuras\Migrador\Cod\uDatos.dfm</Transaction>
+    <Transaction>2013/12/26 10:20:09.976.pas,C:\Prj\Estructuras\Migrador\Cod\Unit1.pas=C:\Prj\Estructuras\Migrador\Cod\uSeleccionarCampos.pas</Transaction>
+    <Transaction>2013/12/26 10:20:09.976.dfm,C:\Prj\Estructuras\Migrador\Cod\Unit1.dfm=C:\Prj\Estructuras\Migrador\Cod\uSeleccionarCampos.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

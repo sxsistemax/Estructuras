@@ -1,0 +1,48 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{01EA85F9-5693-45CE-A4E6-9381BBBB30E8}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Migrador\Cod\SPAMigrarEstructuras.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="OrdenesProduccion\Cod\SPAOrdenesDeProduccion.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="SPAMigrarEstructuras">
+			<MSBuild Projects="Migrador\Cod\SPAMigrarEstructuras.dproj"/>
+		</Target>
+		<Target Name="SPAMigrarEstructuras:Clean">
+			<MSBuild Targets="Clean" Projects="Migrador\Cod\SPAMigrarEstructuras.dproj"/>
+		</Target>
+		<Target Name="SPAMigrarEstructuras:Make">
+			<MSBuild Targets="Make" Projects="Migrador\Cod\SPAMigrarEstructuras.dproj"/>
+		</Target>
+		<Target Name="SPAOrdenesDeProduccion">
+			<MSBuild Projects="OrdenesProduccion\Cod\SPAOrdenesDeProduccion.dproj"/>
+		</Target>
+		<Target Name="SPAOrdenesDeProduccion:Clean">
+			<MSBuild Targets="Clean" Projects="OrdenesProduccion\Cod\SPAOrdenesDeProduccion.dproj"/>
+		</Target>
+		<Target Name="SPAOrdenesDeProduccion:Make">
+			<MSBuild Targets="Make" Projects="OrdenesProduccion\Cod\SPAOrdenesDeProduccion.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="SPAMigrarEstructuras;SPAOrdenesDeProduccion"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="SPAMigrarEstructuras:Clean;SPAOrdenesDeProduccion:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="SPAMigrarEstructuras:Make;SPAOrdenesDeProduccion:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>
