@@ -23,7 +23,6 @@ object frDuplicarComponentes: TfrDuplicarComponentes
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitTop = 212
     object BitBtn1: TBitBtn
       Left = 415
       Top = 6
@@ -34,6 +33,7 @@ object frDuplicarComponentes: TfrDuplicarComponentes
       Kind = bkOK
       ParentDoubleBuffered = False
       TabOrder = 0
+      OnClick = BitBtn1Click
     end
     object BitBtn2: TBitBtn
       Left = 496
@@ -55,10 +55,6 @@ object frDuplicarComponentes: TfrDuplicarComponentes
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitLeft = 168
-    ExplicitTop = 56
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object Label1: TLabel
       Left = 16
       Top = 16
@@ -126,7 +122,7 @@ object frDuplicarComponentes: TfrDuplicarComponentes
       Top = 35
       Width = 121
       Height = 21
-      DataField = 'FEN_CODIGO'
+      DataField = 'FI_CODIGO'
       DataSource = DataSource1
       TabOrder = 0
     end
@@ -158,7 +154,7 @@ object frDuplicarComponentes: TfrDuplicarComponentes
   end
   object DataSource1: TDataSource
     AutoEdit = False
-    DataSet = dmDatos.qrPlantillas
+    DataSet = dmDatos.tbEnsambles
     Left = 352
     Top = 24
   end

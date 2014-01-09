@@ -23,6 +23,7 @@ type
     eDescripcionDestino: TEdit;
     Label3: TLabel;
     procedure SpeedButton1Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -50,12 +51,18 @@ begin
   end;
 end;
 
+procedure TfrDuplicarComponentes.BitBtn1Click(Sender: TObject);
+begin
+  dmDatos.AdicionarComponentes( eCodigo.Text, eCodigoDestino.Text);
+  dmDatos.AbrirComponentes(eCodigo.Text);
+end;
+
 procedure TfrDuplicarComponentes.SpeedButton1Click(Sender: TObject);
 begin
-  eCodigoDestino.Text :=  TfrSeleccionarInventario.Seleccionar(dmDatos.qrSeleccionarPlantillas, True, 'FI_CODIGO');
+  eCodigoDestino.Text :=  TfrSeleccionarInventario.Seleccionar(dmDatos.qrSeleccionarPlantillas, True, 'CODIGO');
   if eCodigoDestino.Text <> '' then
   begin
-    eDescripcionDestino.Text := dmDAtos.qrSeleccionarPlantillasFI_DESCRIPCION.Value;
+    eDescripcionDestino.Text := dmDAtos.qrSeleccionarPlantillasDESCRIPCION.Value;
   end;
 end;
 

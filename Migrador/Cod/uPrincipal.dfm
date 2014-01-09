@@ -140,7 +140,7 @@ object frPrincipal: TfrPrincipal
       TabOrder = 1
     end
     object eArchivoDestino: TComboBox
-      Left = 24
+      Left = 16
       Top = 123
       Width = 273
       Height = 21

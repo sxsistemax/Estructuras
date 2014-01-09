@@ -5,16 +5,26 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ActnList, PlatformDefaultStyleActnCtrls, ActnMan, ToolWin, ActnCtrls,
-  ExtCtrls, Grids, DBGrids;
+  ExtCtrls, Grids, DBGrids, DBCtrls, StdCtrls, DB, Buttons;
 
 type
   TfrPrincipal = class(TForm)
     ActionManager1: TActionManager;
     aPlantillas: TAction;
-    pAcciones: TPanel;
-    ActionToolBar2: TActionToolBar;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    pAcciones: TActionToolBar;
+    Panel3: TPanel;
+    btCancelar: TBitBtn;
+    btGuardar: TBitBtn;
+    BitBtn1: TBitBtn;
+    dsConfiguracion: TDataSource;
+    Label1: TLabel;
+    DBLookupComboBox1: TDBLookupComboBox;
     procedure aPlantillasExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btGuardarClick(Sender: TObject);
+    procedure btCancelarClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,9 +47,21 @@ begin
   CargarPlantillas;
 end;
 
+procedure TfrPrincipal.btCancelarClick(Sender: TObject);
+begin
+  if dsConfiguracion.State = dsEdit then
+    dsConfiguracion.DataSet.Cancel;
+end;
+
+procedure TfrPrincipal.btGuardarClick(Sender: TObject);
+begin
+  if dsConfiguracion.State = dsEdit then
+    dsConfiguracion.DataSet.Post;
+end;
+
 procedure TfrPrincipal.CargarPlantillas;
 begin
-  TfrPlantillas.prMantenimiento( dmDatos.qrPlantillas, 'FEN_CODIGO');
+  TfrPlantillas.prMantenimiento( dmDatos.tbEnsambles, 'FI_CODIGO');
 end;
 
 procedure TfrPrincipal.FormCreate(Sender: TObject);
@@ -57,6 +79,8 @@ begin
 
     //dmDatos.AbrirSEnsambles;
     dmDatos.AbrirSFixed;
+    dmDatos.AbrirUsuarios;
+    dmDatos.AbrirConfiguracion;
  End
   Else
   begin
@@ -70,7 +94,8 @@ begin
     100 : Begin
             pAcciones.Visible := True;
           End;
-      1 : begin
+      1 : pAcciones.Visible := false;
+      2 : begin
             Self.Visible := false;
             CargarPlantillas;
             if not ModoPruebas then

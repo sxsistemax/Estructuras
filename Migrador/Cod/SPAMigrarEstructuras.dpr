@@ -7,7 +7,8 @@ uses
   uTablasConBlobAdministrativo in '..\..\..\CompartidosA2\uTablasConBlobAdministrativo.pas' {dmAdministrativo: TDataModule},
   uUtilidadesSPA in '..\..\..\CompartidosA2\uUtilidadesSPA.pas',
   uDatos in 'uDatos.pas' {dmDatos: TDataModule},
-  uSeleccionarCampos in 'uSeleccionarCampos.pas' {frSeleccionarCampos};
+  uSeleccionarCampos in 'uSeleccionarCampos.pas' {frSeleccionarCampos},
+  uVisualizarLog in 'uVisualizarLog.pas' {frVisualizarLog};
 
 {$R *.res}
 

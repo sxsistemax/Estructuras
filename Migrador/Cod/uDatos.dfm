@@ -450,8 +450,88 @@ object dmDatos: TdmDatos
       FieldName = 'FI_ARANCEL'
       Size = 30
     end
-    object SinventarioFI_POSENTREGA: TBooleanField
-      FieldName = 'FI_POSENTREGA'
+  end
+  object SinvDep: TDBISAMTable
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    TableName = 'SinvDep'
+    Left = 64
+    Top = 112
+    object SinvDepFT_TIPO: TSmallintField
+      FieldName = 'FT_TIPO'
+      Required = True
+    end
+    object SinvDepFT_CODIGOPRODUCTO: TStringField
+      FieldName = 'FT_CODIGOPRODUCTO'
+      Required = True
+      Size = 30
+    end
+    object SinvDepFT_CODIGODEPOSITO: TIntegerField
+      FieldName = 'FT_CODIGODEPOSITO'
+      Required = True
+    end
+    object SinvDepFT_LOTE: TStringField
+      FieldName = 'FT_LOTE'
+      Size = 100
+    end
+    object SinvDepFT_LOTEAUTOINCREMENT: TIntegerField
+      FieldName = 'FT_LOTEAUTOINCREMENT'
+    end
+    object SinvDepFT_NOLINEA: TIntegerField
+      FieldName = 'FT_NOLINEA'
+    end
+    object SinvDepFT_STATUS: TSmallintField
+      FieldName = 'FT_STATUS'
+    end
+    object SinvDepFT_PUESTO: TStringField
+      FieldName = 'FT_PUESTO'
+      Size = 30
+    end
+    object SinvDepFT_EXISTENCIA: TCurrencyField
+      FieldName = 'FT_EXISTENCIA'
+    end
+    object SinvDepFT_EXISTENCIADETALLADA: TCurrencyField
+      FieldName = 'FT_EXISTENCIADETALLADA'
+    end
+    object SinvDepFT_EXISTENCIAAPARTADA: TCurrencyField
+      FieldName = 'FT_EXISTENCIAAPARTADA'
+    end
+    object SinvDepFT_EXISTENCIAORDENCOMPRA: TCurrencyField
+      FieldName = 'FT_EXISTENCIAORDENCOMPRA'
+    end
+    object SinvDepFT_EXISTENCIAPEDIDO: TCurrencyField
+      FieldName = 'FT_EXISTENCIAPEDIDO'
+    end
+    object SinvDepFT_INVENTARIOINICIALBS: TCurrencyField
+      FieldName = 'FT_INVENTARIOINICIALBS'
+    end
+    object SinvDepFT_INVENTARIOINICIALBSCIERRE: TCurrencyField
+      FieldName = 'FT_INVENTARIOINICIALBSCIERRE'
+    end
+    object SinvDepFT_INVENTARIOINICIALUND: TCurrencyField
+      FieldName = 'FT_INVENTARIOINICIALUND'
+    end
+    object SinvDepFT_INVENTARIOINICIALCIERRE: TCurrencyField
+      FieldName = 'FT_INVENTARIOINICIALCIERRE'
+    end
+    object SinvDepFT_CTDTRANSITO: TCurrencyField
+      FieldName = 'FT_CTDTRANSITO'
+    end
+    object SinvDepFT_VISIBLE: TBooleanField
+      FieldName = 'FT_VISIBLE'
+    end
+    object SinvDepFT_CODEBARRA: TAutoIncField
+      FieldName = 'FT_CODEBARRA'
+    end
+    object SinvDepFT_EXISTENCIAAJUSTE: TFloatField
+      FieldName = 'FT_EXISTENCIAAJUSTE'
+    end
+    object SinvDepBASE_AUTOINCREMENT: TAutoIncField
+      FieldName = 'BASE_AUTOINCREMENT'
+    end
+    object SinvDepFT_CODE: TStringField
+      FieldName = 'FT_CODE'
+      Size = 30
     end
   end
 end

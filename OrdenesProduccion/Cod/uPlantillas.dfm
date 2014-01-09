@@ -2,6 +2,7 @@ inherited frPlantillas: TfrPlantillas
   Caption = 'Plantillas'
   ClientHeight = 515
   ClientWidth = 822
+  ExplicitLeft = -95
   ExplicitWidth = 838
   ExplicitHeight = 554
   PixelsPerInch = 96
@@ -22,7 +23,7 @@ inherited frPlantillas: TfrPlantillas
   inherited PageControl1: TPageControl
     Width = 822
     Height = 483
-    ActivePage = tsListado
+    ActivePage = tsRegistro
     ExplicitWidth = 822
     ExplicitHeight = 483
     inherited tsListado: TTabSheet
@@ -31,25 +32,50 @@ inherited frPlantillas: TfrPlantillas
       inherited dgGrid: TDBGrid
         Width = 814
         Height = 426
+        PopupMenu = pmPlantilla
         Columns = <
           item
             Expanded = False
-            FieldName = 'FEN_CODIGO'
+            FieldName = 'Fi_Codigo'
+            Title.Caption = 'Codigo'
+            Width = 106
             Visible = True
           end
           item
             Expanded = False
-            FieldName = 'FI_DESCRIPCION'
+            FieldName = 'Fi_Descripcion'
+            Title.Caption = 'Descripcion'
+            Width = 367
             Visible = True
           end
           item
             Expanded = False
-            FieldName = 'FX_COSTOS'
+            FieldName = 'FI_CLASIFICACION'
             Visible = False
           end
           item
             Expanded = False
+            FieldName = 'Costo'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PrecioSinImpuesto'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Impuesto'
+            Visible = True
+          end
+          item
+            Expanded = False
             FieldName = 'Precio'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Rentabilidad'
             Visible = True
           end>
       end
@@ -62,7 +88,7 @@ inherited frPlantillas: TfrPlantillas
           inherited cbCampoBusqueda: TComboBox
             Left = -8
             Items.Strings = (
-              'FEN_CODIGO'
+              'FI_CODIGO'
               'FI_DESCRIPCION')
             ExplicitLeft = -8
           end
@@ -118,6 +144,7 @@ inherited frPlantillas: TfrPlantillas
           Height = 213
           Align = alClient
           DataSource = dsComponentes
+          PopupMenu = pmComponentes
           TabOrder = 0
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
@@ -194,7 +221,7 @@ inherited frPlantillas: TfrPlantillas
           Top = 23
           Width = 137
           Height = 21
-          DataField = 'FEN_CODIGO'
+          DataField = 'FI_CODIGO'
           DataSource = dsDataSource
           ReadOnly = True
           TabOrder = 0
@@ -211,7 +238,7 @@ inherited frPlantillas: TfrPlantillas
         end
         object GroupBox1: TGroupBox
           Left = 7
-          Top = 143
+          Top = 144
           Width = 524
           Height = 75
           Caption = ' Componentes '
@@ -219,9 +246,10 @@ inherited frPlantillas: TfrPlantillas
           object bCargar: TBitBtn
             Left = 11
             Top = 32
-            Width = 75
+            Width = 116
             Height = 25
-            Caption = 'Cargar'
+            Action = aCargarDesde
+            Caption = 'Cargar desde'
             DoubleBuffered = True
             Glyph.Data = {
               36030000424D3603000000000000360000002800000010000000100000000100
@@ -254,11 +282,12 @@ inherited frPlantillas: TfrPlantillas
             TabOrder = 0
           end
           object bDuplicar: TBitBtn
-            Left = 92
+            Left = 133
             Top = 32
-            Width = 75
+            Width = 116
             Height = 25
-            Caption = 'Duplicar'
+            Action = aCopiarA
+            Caption = 'Copiar A'
             DoubleBuffered = True
             Glyph.Data = {
               36030000424D3603000000000000360000002800000010000000100000000100
@@ -289,25 +318,80 @@ inherited frPlantillas: TfrPlantillas
               8B5ABB8959B98658B68356B38155B07E54AE7C53FFFFFFFFFFFF}
             ParentDoubleBuffered = False
             TabOrder = 1
-            OnClick = bDuplicarClick
           end
           object bEliminarComponentes: TBitBtn
-            Left = 381
+            Left = 377
             Top = 32
             Width = 116
             Height = 25
+            Action = aEliminarTodosComponentes
             Caption = 'Eliminar Todos'
             DoubleBuffered = True
+            Glyph.Data = {
+              36030000424D3603000000000000360000002800000010000000100000000100
+              18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1F1F2E6E7E8C0C0C3FEFEFEFEFE
+              FEB9B9BCF2F2F2FFFFFF151823171A2516192416192416192416192416192448
+              4A53F5F5F66062691E212AAAABAE8B8C902F31388B8D90FFFFFF181A24191B25
+              181A25181A25181A25181A25191B26242630C5C6C9DCDDDE393C44292B332F31
+              38535459EAEAEAFFFFFF1B1D271C1E281C1E281C1E281C1E281C1E281C1F281D
+              1F292A2C35EBEBEC7D7E832E303735363CA4A5A7FEFEFEFFFFFF20222B21232C
+              FFFFFFFFFFFFFFFFFFFFFFFF20222B23252EA9AAAE95969A2F31375253585051
+              56454549BEBEC0FFFFFF24262F252730272931282A32282A3227293127293151
+              5259F9F9F99A9B9E58595EE8E9E9E1E1E2606163C0C0C1FFFFFF282A32292B33
+              292B33292B33292B33292B33282A32292B326C6E73F9F9F9FDFDFDAFB0B3FEFE
+              FEFFFFFFFFFFFFFFFFFF2C2E352D2F36FFFFFFFFFFFFFFFFFFFFFFFF2C2E352D
+              2E362E2F376F70759C9DA0414249FEFEFEFFFFFFFFFFFFFFFFFF303238313339
+              31333931333931333931333930323831323931323931323931323943444BFEFE
+              FEFFFFFFFFFFFFFFFFFF34353B35363C2F31372F31372F31372F31372F313742
+              444A35363C34353B35363C46484DFEFEFEFFFFFFFFFFFFFFFFFF38393F393A40
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF68686D38393F38393F38393F4B4C51FEFE
+              FEFFFFFFFFFFFFFFFFFF3C3D423D3E423E3E423E3E423E3F433D3E433D3E423D
+              3E42FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF404145414145
+              3D3D423D3D423D3E423C3D423C3D423B3C41FFFFFFA2A2A4909093C1C2C3FFFF
+              FFFFFFFFFFFFFFFFFFFF444548444548FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF58
+              585CFFFFFF6464675D5D60F2F2F3FFFFFFFFFFFFFFFFFFFFFFFF47474A48484B
+              49494C49494C49494C49494C49494C48484BFFFFFF6F6F71DBDBDCFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFF4B4B4E4C4C4F4B4B4E4B4B4E4B4B4E4B4B4E4B4B4E4C
+              4C4FFFFFFFD4D4D5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
             ParentDoubleBuffered = False
             TabOrder = 2
           end
-          object BitBtn1: TBitBtn
-            Left = 173
-            Top = 31
-            Width = 75
+          object bAdicionar: TBitBtn
+            Left = 255
+            Top = 32
+            Width = 116
             Height = 25
+            Action = AAdicionarComponente
             Caption = 'Adicionar'
             DoubleBuffered = True
+            Glyph.Data = {
+              36030000424D3603000000000000360000002800000010000000100000000100
+              18000000000000030000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFD3D6F9858FEF505EE93E4EE63E4EE6515FE9858FEFD3D7F9FFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F8FE818BEF3C4CE63C4CE63C4CE63C
+              4CE63C4CE63C4CE63C4CE63D4DE6838DEFF8F9FEFFFFFFFFFFFFFFFFFFF8F9FE
+              6874EC3C4CE63C4CE63C4CE63C4BE63B4BE53B4BE53C4BE63C4CE63C4CE63C4C
+              E66975ECFAFAFEFFFFFFFFFFFF8892F03C4CE63C4CE63C4CE63C4CE63B4BE39E
+              A4E79CA3E63B4BE33C4CE63C4CE63C4CE63C4CE68C95F0FFFFFFD9DCFA3E4DE6
+              3C4CE63C4CE63C4CE63C4CE63949E0E3E4F1E0E2F03949E03C4CE63C4CE63C4C
+              E63C4CE63E4DE6DBDEFA8F98F13C4CE63C4CE63C4CE63C4CE63C4CE63A49E0E3
+              E4F1E0E2F03A49E03C4CE63C4CE63C4CE63C4CE63C4CE6919AF15967EA3C4CE6
+              3C4BE63B4BE33A49E03949E03747DBE3E4F1E1E2F03747DB3949E03949E03A4B
+              E43C4CE63C4CE65B69EA4454E73C4CE63B4BE6949CE5E2E3F1E2E3F1E2E3F0F1
+              F1F4F0F1F4E2E3F0E2E3F1E2E3F1949CE53B4CE63C4CE64554E74554E73C4CE6
+              3B4BE6959CE6E2E3F1E2E3F1E2E3F0F1F1F4F0F1F4E2E3F0E2E3F1E2E3F1959C
+              E63B4BE63C4CE64655E75E6BEA3C4CE63C4CE63A4BE3394AE1394AE03748DBE2
+              E3F0E2E3F03748DB394AE03949E13B4BE43C4CE63C4CE6606DEB929BF13C4CE6
+              3C4CE63C4CE63C4CE63C4CE63A49E0E1E2F0E2E3F13A49E03C4CE63C4CE63C4C
+              E63C4CE63C4CE6959DF1E2E4FB3F4FE63C4CE63C4CE63C4CE63C4CE63949E0E1
+              E2F1E2E3F13949E03C4CE63C4CE63C4CE63C4CE64050E6E4E6FCFFFFFF939CF1
+              3C4CE63C4CE63C4CE63C4CE63B4BE49199E6929AE73B4BE43C4CE63C4CE63C4C
+              E63C4CE6969FF2FFFFFFFFFFFFFDFDFF7B86EE3C4CE63C4CE63C4CE63C4CE63B
+              4CE63B4CE63C4CE63C4CE63C4CE63C4CE67D88EEFDFDFFFFFFFFFFFFFFFFFFFF
+              FDFEFF9BA3F24151E73C4CE63C4CE63C4CE63C4CE63C4CE63C4CE64252E79DA5
+              F2FDFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7E9FC9FA7F36975EC4F
+              5EE84F5EE86A76EC9FA7F3E8EAFCFFFFFFFFFFFFFFFFFFFFFFFF}
             ParentDoubleBuffered = False
             TabOrder = 3
           end
@@ -414,6 +498,7 @@ inherited frPlantillas: TfrPlantillas
             Top = 183
             Width = 137
             Height = 25
+            Action = aRecalcular
             Caption = 'Recalcular'
             DoubleBuffered = True
             Glyph.Data = {
@@ -462,8 +547,12 @@ inherited frPlantillas: TfrPlantillas
       end
     end
   end
+  inherited DBNavigator1: TDBNavigator
+    Width = 184
+    VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast]
+    ExplicitWidth = 184
+  end
   inherited dsDataSource: TDataSource
-    DataSet = dmDatos.qrPlantillas
     Left = 368
     Top = 16
   end
@@ -471,5 +560,73 @@ inherited frPlantillas: TfrPlantillas
     AutoEdit = False
     DataSet = dmDatos.qrComponentes
     Left = 512
+  end
+  object pmPlantilla: TPopupMenu
+    Left = 480
+    Top = 64
+    object Cargardesde1: TMenuItem
+      Action = aCargarDesde
+    end
+    object CopiarA1: TMenuItem
+      Action = aCopiarA
+    end
+    object EliminarTodos1: TMenuItem
+      Action = aEliminarTodosComponentes
+      Caption = 'Eliminar Todos Los Componentes'
+    end
+    object Recalcular1: TMenuItem
+      Action = aRecalcular
+    end
+  end
+  object alPlantillas: TActionList
+    Left = 144
+    Top = 128
+    object aCargarDesde: TAction
+      Category = 'Plantillas'
+      Caption = 'Cargar desde'
+      OnExecute = aCargarDesdeExecute
+    end
+    object aCopiarA: TAction
+      Category = 'Plantillas'
+      Caption = 'Copiar A'
+      OnExecute = aCopiarAExecute
+    end
+    object AAdicionarComponente: TAction
+      Category = 'Componentes'
+      Caption = 'Adicionar'
+      OnExecute = AAdicionarComponenteExecute
+    end
+    object aBorrarComponente: TAction
+      Category = 'Componentes'
+      Caption = 'Borrar Componente'
+      OnExecute = aBorrarComponenteExecute
+    end
+    object aRecalcular: TAction
+      Category = 'Plantillas'
+      Caption = 'Recalcular'
+    end
+    object aEliminarTodosComponentes: TAction
+      Category = 'Plantillas'
+      Caption = 'Eliminar Todos'
+      OnExecute = aEliminarTodosComponentesExecute
+    end
+    object aEditar: TAction
+      Category = 'Componentes'
+      Caption = 'Editar'
+      OnExecute = aEditarExecute
+    end
+  end
+  object pmComponentes: TPopupMenu
+    Left = 328
+    Top = 128
+    object Adicionar1: TMenuItem
+      Action = AAdicionarComponente
+    end
+    object BorrarComponente1: TMenuItem
+      Action = aEditar
+    end
+    object BorrarComponente2: TMenuItem
+      Action = aBorrarComponente
+    end
   end
 end

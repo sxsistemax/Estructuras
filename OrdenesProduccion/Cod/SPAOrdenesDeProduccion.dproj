@@ -61,11 +61,20 @@
 			<DCCReference Include="uPlantillas.pas">
 				<Form>frPlantillas</Form>
 			</DCCReference>
-			<DCCReference Include="uDuplicarComponente.pas">
-				<Form>frDuplicarComponentes</Form>
+			<DCCReference Include="uCargarComponentes.pas">
+				<Form>frCargarComponentes</Form>
 			</DCCReference>
 			<DCCReference Include="C:\Vcl\Comun\MantenimientoSPA.pas">
 				<Form>fmBaseMantenimiento</Form>
+			</DCCReference>
+			<DCCReference Include="uSeleccionarComponentes.pas">
+				<Form>frSeleccionarComponentes</Form>
+			</DCCReference>
+			<DCCReference Include="uDuplicarComponente.pas">
+				<Form>frDuplicarComponentes</Form>
+			</DCCReference>
+			<DCCReference Include="uAdicionarComponente.pas">
+				<Form>frAdicionarComponente</Form>
 			</DCCReference>
 			<DCCReference Include="uSeleccionarInventario.pas">
 				<Form>frSeleccionarInventario</Form>

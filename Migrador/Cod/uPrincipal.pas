@@ -86,6 +86,7 @@ begin
   case Tabla of
     taLotes  : dmDatos.CargarCamposDestino(dmDatos.Sinvlote);
     taEnsambles : dmDatos.CargarCamposDestino(dmDAtos.SEnsambles);
+    taInventario : dmDatos.CargarCamposDestino(dmDAtos.Sinventario);
   end;
 
   dmDatos.CargarCamposOrigen(eArchivo.Text, kSeparadores[eSeparador.ItemIndex]);

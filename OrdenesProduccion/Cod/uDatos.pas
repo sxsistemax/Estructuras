@@ -3,7 +3,8 @@ unit uDatos;
 interface
 
 uses
-  SysUtils, Classes, DB, dbisamtb;
+  SysUtils, Classes, DB, dbisamtb, dialogs, variants, JvComponentBase,
+  JvProgressComponent;
 
 type
   TdmDatos = class(TDataModule)
@@ -19,8 +20,76 @@ type
     SEnsamblesFEN_DETALLE: TMemoField;
     SEnsamblesFEN_OTRO1: TFloatField;
     SEnsamblesFEN_TIPORECORD: TSmallintField;
-    qrPlantillas: TDBISAMQuery;
+    qrPlantillas1: TDBISAMQuery;
     Sinventario: TDBISAMTable;
+    qrSeleccionarPlantillas: TDBISAMQuery;
+    Sinvlote: TDBISAMTable;
+    SinvloteFL_CODIGO: TStringField;
+    SinvloteFL_LOTE: TStringField;
+    SinvloteFL_RANDOM: TIntegerField;
+    SinvloteFL_CORRELATIVO: TAutoIncField;
+    SinvloteFL_FECHA: TDateField;
+    SinvloteFL_VENCIMIENTO: TDateField;
+    SinvloteFL_COSTO: TCurrencyField;
+    SinvloteFL_PRECIO: TCurrencyField;
+    SinvloteFL_OFERTA: TCurrencyField;
+    SinvloteFL_INICIOOFERTA: TDateField;
+    SinvloteFL_FINOFERTA: TDateField;
+    SinvloteFL_NAMEOFERTA: TStringField;
+    SinvloteFL_EXISTENCIA: TBCDField;
+    SinvloteFL_PUESTO: TStringField;
+    SinvloteFL_TIPO: TIntegerField;
+    SinvloteFL_COSTOIMPORTADO: TCurrencyField;
+    SinvloteFL_UTILIDADIMPORTADO: TCurrencyField;
+    SinvloteFL_PRECIOIMPORTADO: TCurrencyField;
+    SinvloteFL_PORCENTUTILIDADIMP: TBooleanField;
+    SinvloteFL_PORCENTUTILIDAD: TBooleanField;
+    SinvloteFL_MONTOIMPUESTO1: TCurrencyField;
+    SinvloteFL_MONTOIMPUESTO2: TCurrencyField;
+    SinvloteFL_PRECIOSINIMPUESTO: TCurrencyField;
+    SinvloteFL_UTILIDAD: TCurrencyField;
+    SinvloteFL_TIPOROUND: TIntegerField;
+    SinvloteFL_VISIBLE: TBooleanField;
+    SinvloteFL_IMPUESTO1VISIBLE: TBooleanField;
+    SinvloteFL_IMPUESTO2VISIBLE: TBooleanField;
+    SinvloteFL_STATUS: TBooleanField;
+    SinvloteBASE_AUTOINCREMENT: TAutoIncField;
+    qrComponentes: TDBISAMQuery;
+    qrComponentesCodigo: TStringField;
+    qrComponentesDescripcion: TStringField;
+    qrComponentesLote: TStringField;
+    qrComponentesCantidad: TFloatField;
+    qrComponentesCosto: TCurrencyField;
+    qrComponentesFX_COSTOS: TBlobField;
+    qrPlantillas1FEN_CODIGO: TStringField;
+    qrPlantillas1FI_DESCRIPCION: TStringField;
+    qrPlantillas1FX_COSTOS: TBlobField;
+    qrPlantillas1Precio: TFloatField;
+    qrPlantillas1Costo: TFloatField;
+    qrPlantillas1Rentabilidad: TFloatField;
+    Susuarios: TDBISAMTable;
+    SusuariosNombre: TStringField;
+    SusuariosCode: TAutoIncField;
+    SusuariosDescripcion: TStringField;
+    SPAOrdenesConfiguracion: TDBISAMTable;
+    SPAOrdenesConfiguracionUsuario: TIntegerField;
+    SPAOrdenesConfiguracionNombre: TStringField;
+    tbEnsambles: TDBISAMTable;
+    tbEnsamblesFI_CODIGO: TStringField;
+    tbEnsamblesFI_DESCRIPCION: TStringField;
+    tbEnsamblesFI_CLASIFICACION: TIntegerField;
+    tbEnsamblesPrecio: TFloatField;
+    tbEnsamblesCosto: TFloatField;
+    tbEnsamblesRentabilidad: TFloatField;
+    qrConsulta: TDBISAMQuery;
+    qrSeleccionarPlantillasCodigo: TStringField;
+    qrSeleccionarPlantillasDescripcion: TStringField;
+    qrSeleccionarPlantillasTotalComponentes: TIntegerField;
+    pdProgreso: TJvProgressComponent;
+    qrSeleccionarComponentes: TDBISAMQuery;
+    qrSeleccionarComponentesCodigo: TStringField;
+    qrSeleccionarComponentesDescripcion: TStringField;
+    qrSeleccionarComponentesLote: TStringField;
     SinventarioFI_CODIGO: TStringField;
     SinventarioFI_DESCRIPCION: TStringField;
     SinventarioFI_CATEGORIA: TStringField;
@@ -92,71 +161,34 @@ type
     SinventarioFI_PRECIOLISTA: TBooleanField;
     SinventarioFI_APROVECHAPORC: TCurrencyField;
     SinventarioFI_ARANCEL: TStringField;
-    SinventarioFI_POSENTREGA: TBooleanField;
-    qrSeleccionarPlantillas: TDBISAMQuery;
-    Sinvlote: TDBISAMTable;
-    SinvloteFL_CODIGO: TStringField;
-    SinvloteFL_LOTE: TStringField;
-    SinvloteFL_RANDOM: TIntegerField;
-    SinvloteFL_CORRELATIVO: TAutoIncField;
-    SinvloteFL_FECHA: TDateField;
-    SinvloteFL_VENCIMIENTO: TDateField;
-    SinvloteFL_COSTO: TCurrencyField;
-    SinvloteFL_PRECIO: TCurrencyField;
-    SinvloteFL_OFERTA: TCurrencyField;
-    SinvloteFL_INICIOOFERTA: TDateField;
-    SinvloteFL_FINOFERTA: TDateField;
-    SinvloteFL_NAMEOFERTA: TStringField;
-    SinvloteFL_EXISTENCIA: TBCDField;
-    SinvloteFL_PUESTO: TStringField;
-    SinvloteFL_TIPO: TIntegerField;
-    SinvloteFL_COSTOIMPORTADO: TCurrencyField;
-    SinvloteFL_UTILIDADIMPORTADO: TCurrencyField;
-    SinvloteFL_PRECIOIMPORTADO: TCurrencyField;
-    SinvloteFL_PORCENTUTILIDADIMP: TBooleanField;
-    SinvloteFL_PORCENTUTILIDAD: TBooleanField;
-    SinvloteFL_MONTOIMPUESTO1: TCurrencyField;
-    SinvloteFL_MONTOIMPUESTO2: TCurrencyField;
-    SinvloteFL_PRECIOSINIMPUESTO: TCurrencyField;
-    SinvloteFL_UTILIDAD: TCurrencyField;
-    SinvloteFL_TIPOROUND: TIntegerField;
-    SinvloteFL_VISIBLE: TBooleanField;
-    SinvloteFL_IMPUESTO1VISIBLE: TBooleanField;
-    SinvloteFL_IMPUESTO2VISIBLE: TBooleanField;
-    SinvloteFL_STATUS: TBooleanField;
-    SinvloteBASE_AUTOINCREMENT: TAutoIncField;
-    qrSeleccionarPlantillasFI_CODIGO: TStringField;
-    qrSeleccionarPlantillasFI_DESCRIPCION: TStringField;
-    qrComponentes: TDBISAMQuery;
-    qrComponentesCodigo: TStringField;
-    qrComponentesDescripcion: TStringField;
-    qrComponentesLote: TStringField;
-    qrComponentesCantidad: TFloatField;
-    qrComponentesCosto: TCurrencyField;
-    qrComponentesFX_COSTOS: TBlobField;
-    qrPlantillasFEN_CODIGO: TStringField;
-    qrPlantillasFI_DESCRIPCION: TStringField;
-    qrPlantillasFX_COSTOS: TBlobField;
-    qrPlantillasPrecio: TFloatField;
-    qrPlantillasCosto: TFloatField;
-    qrPlantillasRentabilidad: TFloatField;
+    tbEnsamblesImpuesto: TFloatField;
+    tbEnsamblesPrecioSinImpuesto: TFloatField;
     procedure qrComponentesCostoGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
-    procedure qrPlantillasCalcFields(DataSet: TDataSet);
-    procedure qrPlantillasPrecioGetText(Sender: TField; var Text: string;
+    procedure tbEnsamblesCostoGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
-    procedure qrPlantillasCostoGetText(Sender: TField; var Text: string;
+    procedure tbEnsamblesPrecioGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
-    procedure qrPlantillasRentabilidadGetText(Sender: TField; var Text: string;
+    procedure tbEnsamblesPrecioSinImpuestoGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure tbEnsamblesImpuestoGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure tbEnsamblesRentabilidadGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
   private
     { Private declarations }
   public
     { Public declarations }
     procedure AbrirSEnsambles;
-    procedure AbrirPlantillas;
     procedure AbrirComponentes( Plantilla : string);
     procedure AbrirSFixed;
+    procedure AbrirConfiguracion;
+    procedure AbrirUsuarios;
+    procedure AbrirInventario;
+    procedure AdicionarComponentes( Origen, Destino : string);
+    procedure ActualizaarComponente( Plantilla, Componente, Lote : string; Cantidad : double);
+    Function DescripcionReferencia( Codigo : String) : string;
+    Procedure BorrarComponentes(Plantilla, Componente, Lote : string);
   end;
 
 var
@@ -172,20 +204,56 @@ uses uBaseDatosA2, uTablasConBlobAdministrativo;
 
 procedure TdmDatos.AbrirComponentes( Plantilla : string);
 begin
+  pdProgreso.Execute;
+  pdProgreso.ProgressMax := 100;
+  pdProgreso.ProgressPosition := 0;
   qrComponentes.Close;
   qrComponentes.ParamByName('CodigoPlantilla').Value := Plantilla;
   qrComponentes.Open;
+  pdProgreso.ProgressPosition := 100;
+  pdProgreso.Hide;
 end;
 
-procedure TdmDatos.AbrirPlantillas;
+procedure TdmDatos.AbrirConfiguracion;
+var
+  C: TStringField;
+  S: string;
 begin
-  qrPlantillas.Close;
-  qrPlantillas.Open;
+  S := IncludeTrailingPathDelimiter(dmBasesDatos.dbA2.Directory);
+
+  S := S + SPAOrdenesConfiguracion.TableName + '.dat';
+
+  // Si no existe el erachivo debe crearlo
+  if Not FileExists(S) then
+  begin
+    SPAOrdenesConfiguracion.CreateTable();
+  end;
+
+  if not SPAOrdenesConfiguracion.Active then
+    SPAOrdenesConfiguracion.Open;
+
+  if SPAOrdenesConfiguracion.RecordCount = 0 then
+  begin
+    SPAOrdenesConfiguracion.Insert;
+    SPAOrdenesConfiguracion.Post;
+  end;
+end;
+
+procedure TdmDatos.AbrirInventario;
+begin
+  try
+    if not Sinventario.Active then
+      Sinventario.Open;
+        
+  except on E: Exception do
+    ShowMessage('Ocurrió un error abriendo SInventario.' + E.Message)
+  end;
 end;
 
 procedure TdmDatos.AbrirSEnsambles;
 begin
-  SEnsambles.Open;
+  if not SEnsambles.Active then
+    SEnsambles.Open;
 end;
 
 procedure TdmDatos.AbrirSFixed;
@@ -197,6 +265,121 @@ begin
   dmAdministrativo.sFixed.Filter := 'FX_TIPO = ''B''';
   dmAdministrativo.sFixed.Filtered := true;
 
+end;
+
+procedure TdmDatos.AbrirUsuarios;
+begin
+  if not Susuarios.Active then
+    Susuarios.Open;
+end;
+
+procedure TdmDatos.AdicionarComponentes(Origen, Destino: string);
+begin
+  try
+    pdProgreso.ProgressStep := 0;
+    pdProgreso.Execute;
+
+    AbrirSEnsambles;
+
+    qrConsulta.Close;
+    qrConsulta.SQL.Text := 'Select * from SEnsambles Where FEN_CodeParte <> ''$$$$$$$$$$'' and FEN_Codigo = ''' + Origen + '''';
+    qrConsulta.Open;
+
+    pdProgreso.ProgressMax := qrConsulta.RecordCount;
+
+    // si no existe el padre Inserta el padre del ensamble
+    if not SEnsambles.Locate('FEN_CODIGO;FEN_CODEPARTE', VarArrayOf([Destino, '$$$$$$$$$$']), []) then
+    begin
+      SEnsambles.Append;
+
+      SEnsamblesFEN_CODIGO.Value := Destino;
+      SEnsamblesFEN_CTDPLANTILLA.Value := 1;
+      SEnsamblesFEN_CODEPARTE.Value := '$$$$$$$$$$';
+      SEnsamblesFEN_CANTIDAD.Value := 0;
+      SEnsamblesFEN_CODEPRESENTA.Value := '';
+      SEnsamblesFEN_OTRO1.Value := 0;
+      SEnsamblesFEN_TIPORECORD.Value := 1;
+
+    end;
+
+    qrConsulta.First;
+    while not qrConsulta.EOF do
+    begin
+      SEnsambles.Append;
+
+      SEnsamblesFEN_CODIGO.Value := Destino;
+      SEnsamblesFEN_CODEPARTE.Value := qrConsulta.FieldByName('FEN_CODEPARTE').Value;
+      SEnsamblesFEN_CANTIDAD.Value := qrConsulta.FieldByName('FEN_CANTIDAD').Value;
+      SEnsamblesFEN_CODEPRESENTA.Value := qrConsulta.FieldByName('FEN_CODEPRESENTA').Value;
+
+      pdProgreso.InfoLabel := qrConsulta.FieldByName('FEN_CODEPARTE').Value;
+      pdProgreso.ProgressPosition := qrConsulta.RecNo;
+      qrConsulta.Next;
+    end;
+
+    SEnsambles.Post;
+
+  except on E: Exception do
+    begin
+      ShowMessage( 'Ocurrio un error ejecutnado consulta copiar componentes. ' + E.Message);
+      if SEnsambles.State = dsEdit then
+         SEnsambles.Cancel;
+    end;
+  end;
+  pdProgreso.Hide;
+end;
+
+procedure TdmDatos.BorrarComponentes(Plantilla, Componente, Lote: string);
+begin
+  try
+    qrConsulta.Close;
+    qrConsulta.SQL.Text := 'Delete from SEnsambles Where FEN_CODEPARTE <> ''$$$$$$$$$$'' and FEN_CODIGO = ''' + Plantilla + ''' ';
+    if (Componente <> '') and (Lote <> '') then
+      qrConsulta.SQL.Text := qrConsulta.SQL.Text + ' and FEN_CODEPARTE = ''' + Componente + ''' and FEN_CODEPRESENTA = ''' + Lote + '''';
+
+    qrConsulta.ExecSQL;
+      
+  except on E: Exception do
+    ShowMessage('Ocurrió un error borrando componentes.');
+  end;
+end;
+
+function TdmDatos.DescripcionReferencia(Codigo: String): string;
+begin
+  Result := 'No encontrado.';
+  try
+    AbrirInventario;
+
+    if SInventario.Locate('FI_CODIGO', Codigo, []) then
+      Result := SInventarioFI_DESCRIPCION.Value;
+    
+  except on E: Exception do
+    ShowMessage('Ocurrió un error buscando la descripción.' + E.Message);
+  end;
+end;
+
+procedure TdmDatos.ActualizaarComponente(Plantilla, Componente, Lote: string;
+  Cantidad: double);
+begin
+  try
+    AbrirSEnsambles;
+  
+    if SEnsambles.Locate('FEN_CODIGO;FEN_CODEPARTE;FEN_CODEPRESENTA', 
+        VarArrayOf([Plantilla, Componente, Lote]), []) then
+      SEnsambles.Edit
+    Else
+      SEnsambles.Append;
+
+    SEnsamblesFEN_CODIGO.Value := Plantilla;
+    SEnsamblesFEN_CODEPARTE.Value := Componente;
+    SEnsamblesFEN_CANTIDAD.Value := Cantidad;
+    SEnsamblesFEN_CODEPRESENTA.Value := Lote;
+
+    SEnsambles.Post;
+
+  except on E: Exception do
+    ShowMessage('Ocurrió un error actualizando componente. ' + E.Message);
+  end;
 end;
 
 procedure TdmDatos.qrComponentesCostoGetText(Sender: TField; var Text: string;
@@ -213,55 +396,56 @@ begin
   end;
 
 end;
- procedure TdmDatos.qrPlantillasCalcFields(DataSet: TDataSet);
-begin
-  with dmAdministrativo do
-  begin
-    CargarTablaCostos(TDBISAMTable(qrPlantillas), qrPlantillasFX_COSTOS );
 
-    tbCostos.First;
-
-    tbPrecios.First;
-
-//    // Cargo los valores en los campos calculados
-    qrPlantillasCosto.Value := tbCostosCostoActual.Value;
-//    qrPlantillasUtilidad.Value := tbPreciosUtilidad.Value;
-    qrPlantillasPrecio.Value := tbPreciosPrecio.Value;
-//    qrPlantillasValorIVA.Value := tbCostosmImpuesto1.Value;
-//    qrPlantillasNetoVenta.Value := tbPreciosPrecio.Value + tbCostosmImpuesto1.Value;
-    if tbCostosCostoActual.Value > 0 then
-      qrPlantillasRentabilidad.Value := tbPreciosUtilidad.Value / tbCostosCostoActual.Value
-    else
-      qrPlantillasRentabilidad.Value := 100;
-  end;
-end;
-
-
-procedure TdmDatos.qrPlantillasCostoGetText(Sender: TField; var Text: string;
+procedure TdmDatos.tbEnsamblesCostoGetText(Sender: TField; var Text: string;
   DisplayText: Boolean);
 begin
-  Text := FloatToStr( qrPlantillasCosto.Value);
+  dmAdministrativo.CargarCostos( tbEnsamblesFI_CODIGO.Value);
+
+  dmAdministrativo.tbCostos.First;
+
+  Text := dmAdministrativo.tbCostosCostoPromedio.AsString;
+
 end;
 
-procedure TdmDatos.qrPlantillasPrecioGetText(Sender: TField; var Text: string;
+procedure TdmDatos.tbEnsamblesImpuestoGetText(Sender: TField; var Text: string;
   DisplayText: Boolean);
 begin
-  with dmAdministrativo do
-  begin
-     CargarTablaCostos(TDBISAMTable(qrPlantillas), qrPlantillasFX_COSTOS );
+  dmAdministrativo.CargarCostos( tbEnsamblesFI_CODIGO.Value);
 
-      tbCostos.First;
+  dmAdministrativo.tbPrecios.First;
 
-      tbPrecios.First;
-
-      Text := FloatToStr( tbPreciosPrecio.Value);
-  end;
+  Text := dmAdministrativo.tbPreciosMtoImpuesto1.AsString;
 end;
 
-procedure TdmDatos.qrPlantillasRentabilidadGetText(Sender: TField;
+procedure TdmDatos.tbEnsamblesPrecioGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  dmAdministrativo.CargarCostos( tbEnsamblesFI_CODIGO.Value);
+
+  dmAdministrativo.tbPrecios.First;
+
+  Text := dmAdministrativo.tbPreciosPrecio.AsString;
+end;
+
+procedure TdmDatos.tbEnsamblesPrecioSinImpuestoGetText(Sender: TField;
   var Text: string; DisplayText: Boolean);
 begin
-  Text := FloatToStr( qrPlantillasRentabilidad.Value);
+  dmAdministrativo.CargarCostos( tbEnsamblesFI_CODIGO.Value);
+
+  dmAdministrativo.tbPrecios.First;
+
+  Text := dmAdministrativo.tbPreciosSinImpuesto.AsString;
+end;
+
+procedure TdmDatos.tbEnsamblesRentabilidadGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  dmAdministrativo.CargarCostos( tbEnsamblesFI_CODIGO.Value);
+
+  dmAdministrativo.tbPrecios.First;
+
+  Text := dmAdministrativo.tbPreciosUtilidad.AsString;
 end;
 
 end.

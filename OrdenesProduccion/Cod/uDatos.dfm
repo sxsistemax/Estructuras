@@ -46,8 +46,7 @@ object dmDatos: TdmDatos
       FieldName = 'FEN_TIPORECORD'
     end
   end
-  object qrPlantillas: TDBISAMQuery
-    OnCalcFields = qrPlantillasCalcFields
+  object qrPlantillas1: TDBISAMQuery
     DatabaseName = 'dbA2'
     EngineVersion = '4.29 Build 1'
     SQL.Strings = (
@@ -62,12 +61,12 @@ object dmDatos: TdmDatos
       '  (SFixed.FX_TIPO = '#39'B'#39')')
     Params = <>
     Left = 32
-    Top = 104
-    object qrPlantillasFEN_CODIGO: TStringField
+    Top = 88
+    object qrPlantillas1FEN_CODIGO: TStringField
       FieldName = 'FEN_CODIGO'
       Size = 30
     end
-    object qrPlantillasFI_DESCRIPCION: TStringField
+    object qrPlantillas1FI_DESCRIPCION: TStringField
       FieldKind = fkLookup
       FieldName = 'FI_DESCRIPCION'
       LookupDataSet = Sinventario
@@ -77,26 +76,23 @@ object dmDatos: TdmDatos
       Size = 50
       Lookup = True
     end
-    object qrPlantillasFX_COSTOS: TBlobField
+    object qrPlantillas1FX_COSTOS: TBlobField
       FieldName = 'FX_COSTOS'
       Visible = False
     end
-    object qrPlantillasPrecio: TFloatField
+    object qrPlantillas1Precio: TFloatField
       FieldKind = fkCalculated
       FieldName = 'Precio'
-      OnGetText = qrPlantillasPrecioGetText
       Calculated = True
     end
-    object qrPlantillasCosto: TFloatField
+    object qrPlantillas1Costo: TFloatField
       FieldKind = fkCalculated
       FieldName = 'Costo'
-      OnGetText = qrPlantillasCostoGetText
       Calculated = True
     end
-    object qrPlantillasRentabilidad: TFloatField
+    object qrPlantillas1Rentabilidad: TFloatField
       FieldKind = fkCalculated
       FieldName = 'Rentabilidad'
-      OnGetText = qrPlantillasRentabilidadGetText
       Calculated = True
     end
   end
@@ -104,7 +100,7 @@ object dmDatos: TdmDatos
     DatabaseName = 'dbA2'
     EngineVersion = '4.29 Build 1'
     TableName = 'Sinventario'
-    Left = 112
+    Left = 360
     Top = 16
     object SinventarioFI_CODIGO: TStringField
       FieldName = 'FI_CODIGO'
@@ -344,43 +340,45 @@ object dmDatos: TdmDatos
       FieldName = 'FI_ARANCEL'
       Size = 30
     end
-    object SinventarioFI_POSENTREGA: TBooleanField
-      FieldName = 'FI_POSENTREGA'
-    end
   end
   object qrSeleccionarPlantillas: TDBISAMQuery
     DatabaseName = 'dbA2'
     EngineVersion = '4.29 Build 1'
     SQL.Strings = (
       'SELECT '
-      '  Sinventario.FI_CODIGO,'
-      '  Sinventario.FI_DESCRIPCION'
+      '  Sinventario.FI_CODIGO Codigo,'
+      '  Sinventario.FI_DESCRIPCION Descripcion,'
+      '  COUNT(*) - 1 AS TotalComponentes'
       'FROM'
-      ' SEnsambles'
+      ' Sinventario'
       
-        ' RIGHT OUTER JOIN Sinventario ON (SEnsambles.FEN_CODIGO=Sinventa' +
-        'rio.FI_CODIGO)'
+        ' LEFT OUTER JOIN SEnsambles ON (Sinventario.FI_CODIGO=SEnsambles' +
+        '.FEN_CODIGO)'
       'WHERE'
-      '  (SEnsambles.FEN_CODIGO IS NULL)')
+      '  (FI_CLASIFICACION = 3)'
+      'GROUP BY'
+      '  Sinventario.FI_CODIGO,'
+      '  Sinventario.FI_DESCRIPCION')
     Params = <>
-    Left = 168
-    Top = 104
-    object qrSeleccionarPlantillasFI_CODIGO: TStringField
-      DisplayLabel = 'C'#243'digo'
-      FieldName = 'FI_CODIGO'
+    Left = 376
+    Top = 176
+    object qrSeleccionarPlantillasCodigo: TStringField
+      FieldName = 'Codigo'
       Size = 30
     end
-    object qrSeleccionarPlantillasFI_DESCRIPCION: TStringField
-      DisplayLabel = 'Descripci'#243'n'
-      FieldName = 'FI_DESCRIPCION'
+    object qrSeleccionarPlantillasDescripcion: TStringField
+      FieldName = 'Descripcion'
       Size = 40
+    end
+    object qrSeleccionarPlantillasTotalComponentes: TIntegerField
+      FieldName = 'TotalComponentes'
     end
   end
   object Sinvlote: TDBISAMTable
     DatabaseName = 'dbA2'
     EngineVersion = '4.29 Build 1'
     TableName = 'Sinvlote'
-    Left = 184
+    Left = 152
     Top = 16
     object SinvloteFL_CODIGO: TStringField
       FieldName = 'FL_CODIGO'
@@ -538,6 +536,137 @@ object dmDatos: TdmDatos
     object qrComponentesFX_COSTOS: TBlobField
       FieldName = 'FX_COSTOS'
       Visible = False
+    end
+  end
+  object Susuarios: TDBISAMTable
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    TableName = 'Susuarios'
+    Left = 248
+    Top = 16
+    object SusuariosNombre: TStringField
+      FieldName = 'Nombre'
+      Required = True
+      Size = 40
+    end
+    object SusuariosCode: TAutoIncField
+      FieldName = 'Code'
+    end
+    object SusuariosDescripcion: TStringField
+      FieldName = 'Descripcion'
+      Size = 40
+    end
+  end
+  object SPAOrdenesConfiguracion: TDBISAMTable
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    TableName = 'SPAOrdenesConfiguracion'
+    Left = 152
+    Top = 176
+    object SPAOrdenesConfiguracionUsuario: TIntegerField
+      FieldName = 'Usuario'
+    end
+    object SPAOrdenesConfiguracionNombre: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Nombre'
+      LookupDataSet = Susuarios
+      LookupKeyFields = 'Code'
+      LookupResultField = 'Nombre'
+      KeyFields = 'Usuario'
+      Lookup = True
+    end
+  end
+  object tbEnsambles: TDBISAMTable
+    Filter = 'FI_Clasificacion = 3'
+    Filtered = True
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    TableName = 'Sinventario'
+    Left = 272
+    Top = 88
+    object tbEnsamblesFI_CODIGO: TStringField
+      FieldName = 'FI_CODIGO'
+      Required = True
+      Size = 30
+    end
+    object tbEnsamblesFI_DESCRIPCION: TStringField
+      FieldName = 'FI_DESCRIPCION'
+      Required = True
+      Size = 40
+    end
+    object tbEnsamblesFI_CLASIFICACION: TIntegerField
+      FieldName = 'FI_CLASIFICACION'
+    end
+    object tbEnsamblesCosto: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'Costo'
+      OnGetText = tbEnsamblesCostoGetText
+      Calculated = True
+    end
+    object tbEnsamblesPrecioSinImpuesto: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'PrecioSinImpuesto'
+      OnGetText = tbEnsamblesPrecioSinImpuestoGetText
+      Calculated = True
+    end
+    object tbEnsamblesImpuesto: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'Impuesto'
+      OnGetText = tbEnsamblesImpuestoGetText
+      Calculated = True
+    end
+    object tbEnsamblesPrecio: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'Precio'
+      OnGetText = tbEnsamblesPrecioGetText
+      Calculated = True
+    end
+    object tbEnsamblesRentabilidad: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'Rentabilidad'
+      OnGetText = tbEnsamblesRentabilidadGetText
+      Calculated = True
+    end
+  end
+  object qrConsulta: TDBISAMQuery
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    Params = <>
+    Left = 32
+    Top = 248
+  end
+  object pdProgreso: TJvProgressComponent
+    Caption = 'Procesando'
+    Left = 432
+    Top = 80
+  end
+  object qrSeleccionarComponentes: TDBISAMQuery
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    SQL.Strings = (
+      'SELECT '
+      '  Sinventario.FI_CODIGO Codigo,'
+      '  Sinventario.FI_DESCRIPCION Descripcion,'
+      '  Sinvlote.FL_LOTE Lote'
+      'FROM'
+      ' Sinventario'
+      
+        ' INNER JOIN Sinvlote ON (Sinventario.FI_CODIGO=Sinvlote.FL_CODIG' +
+        'O)')
+    Params = <>
+    Left = 376
+    Top = 240
+    object qrSeleccionarComponentesCodigo: TStringField
+      FieldName = 'Codigo'
+      Size = 30
+    end
+    object qrSeleccionarComponentesDescripcion: TStringField
+      FieldName = 'Descripcion'
+      Size = 40
+    end
+    object qrSeleccionarComponentesLote: TStringField
+      FieldName = 'Lote'
+      Size = 50
     end
   end
 end

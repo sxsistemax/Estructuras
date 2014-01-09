@@ -8,8 +8,11 @@ uses
   uTablasConBlobAdministrativo in '..\..\..\CompartidosA2\uTablasConBlobAdministrativo.pas' {dmAdministrativo: TDataModule},
   uUtilidadesSPA in '..\..\..\CompartidosA2\uUtilidadesSPA.pas',
   uPlantillas in 'uPlantillas.pas' {frPlantillas},
-  uDuplicarComponente in 'uDuplicarComponente.pas' {frDuplicarComponentes},
+  uCargarComponentes in 'uCargarComponentes.pas' {frCargarComponentes},
   MantenimientoSPA in 'C:\Vcl\Comun\MantenimientoSPA.pas' {fmBaseMantenimiento},
+  uSeleccionarComponentes in 'uSeleccionarComponentes.pas' {frSeleccionarComponentes},
+  uDuplicarComponente in 'uDuplicarComponente.pas' {frDuplicarComponentes},
+  uAdicionarComponente in 'uAdicionarComponente.pas' {frAdicionarComponente},
   uSeleccionarInventario in 'uSeleccionarInventario.pas' {frSeleccionarInventario};
 
 {$R *.res}
@@ -17,6 +20,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  Application.Title := 'SPA Ordenes de Producción';
   Application.CreateForm(TdmBasesDatos, dmBasesDatos);
   Application.CreateForm(TdmAdministrativo, dmAdministrativo);
   Application.CreateForm(TdmDatos, dmDatos);

@@ -20,5 +20,11 @@
     <Transaction>2013/12/17 11:51:01.479.dfm,C:\Prj\Estructuras\Cod\uSeleccionarInventario.dfm=</Transaction>
     <Transaction>2013/12/17 11:51:14.598.pas,C:\Prj\Estructuras\Cod\Unit1.pas=C:\Prj\Estructuras\Cod\uSeleccionarInventario.pas</Transaction>
     <Transaction>2013/12/17 11:51:14.598.dfm,C:\Prj\Estructuras\Cod\Unit1.dfm=C:\Prj\Estructuras\Cod\uSeleccionarInventario.dfm</Transaction>
+    <Transaction>2014/01/08 13:52:30.882.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\uDuplicarComponente.pas=C:\Prj\Estructuras\OrdenesProduccion\Cod\uCargarComponentes.pas</Transaction>
+    <Transaction>2014/01/08 13:52:30.883.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\uDuplicarComponente.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uCargarComponentes.dfm</Transaction>
+    <Transaction>2014/01/08 21:32:10.273.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.pas=C:\Prj\Estructuras\OrdenesProduccion\Cod\uAdicionarComponente.pas</Transaction>
+    <Transaction>2014/01/08 21:32:10.273.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uAdicionarComponente.dfm</Transaction>
+    <Transaction>2014/01/08 21:57:48.969.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarInventario.pas=C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarComponentes.pas</Transaction>
+    <Transaction>2014/01/08 21:57:48.969.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarInventario.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarComponentes.dfm</Transaction>
   </Transactions>
 </BorlandProject>

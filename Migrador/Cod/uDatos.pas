@@ -7,12 +7,61 @@ uses
   JvProgressDialog, Variants;
 
 type
-  tArchivos = (taLotes, taEnsambles, taInventario);
+  tArchivos = (taLotes, taEnsambles, taInventario, taFixed);
 
   tSeparadores = (tsComa, tsDosPuntos, tsEspacio, tsGuion, tsPuntoyComa, Tabulador);
 
   TdmDatos = class(TDataModule)
     Sinvlote: TDBISAMTable;
+    qrConsulta: TDBISAMQuery;
+    tbCamposDestino: TJvMemoryData;
+    tbCamposOrigen: TJvMemoryData;
+    tbCamposOrigenCampoOrigen: TStringField;
+    tbCamposDestinoCampoDestino: TStringField;
+    tbCamposOrigenOrden: TIntegerField;
+    tbCamposDestinoNumeroCampoOrigen: TIntegerField;
+    tbCamposDestinoCampoOrigen: TStringField;
+    tbArchivo: TJvMemoryData;
+    tbCamposDestinoTipoDato: TIntegerField;
+    tbCamposDestinoTamanoDato: TIntegerField;
+    pdProceso: TJvProgressDialog;
+    SEnsambles: TDBISAMTable;
+    SEnsamblesFEN_CODIGO: TStringField;
+    SEnsamblesFEN_CODE: TAutoIncField;
+    SEnsamblesFEN_CTDPLANTILLA: TFloatField;
+    SEnsamblesFEN_CODEPARTE: TStringField;
+    SEnsamblesFEN_CANTIDAD: TFloatField;
+    SEnsamblesFEN_CODEPRESENTA: TStringField;
+    SEnsamblesFEN_ORIGENAUTO: TIntegerField;
+    SEnsamblesFEN_FACTORPRESENTA: TFloatField;
+    SEnsamblesFEN_DETALLE: TMemoField;
+    SEnsamblesFEN_OTRO1: TFloatField;
+    SEnsamblesFEN_TIPORECORD: TSmallintField;
+    Sinventario: TDBISAMTable;
+    SinvDep: TDBISAMTable;
+    SinvDepFT_TIPO: TSmallintField;
+    SinvDepFT_CODIGOPRODUCTO: TStringField;
+    SinvDepFT_CODIGODEPOSITO: TIntegerField;
+    SinvDepFT_LOTE: TStringField;
+    SinvDepFT_LOTEAUTOINCREMENT: TIntegerField;
+    SinvDepFT_NOLINEA: TIntegerField;
+    SinvDepFT_STATUS: TSmallintField;
+    SinvDepFT_PUESTO: TStringField;
+    SinvDepFT_EXISTENCIA: TCurrencyField;
+    SinvDepFT_EXISTENCIADETALLADA: TCurrencyField;
+    SinvDepFT_EXISTENCIAAPARTADA: TCurrencyField;
+    SinvDepFT_EXISTENCIAORDENCOMPRA: TCurrencyField;
+    SinvDepFT_EXISTENCIAPEDIDO: TCurrencyField;
+    SinvDepFT_INVENTARIOINICIALBS: TCurrencyField;
+    SinvDepFT_INVENTARIOINICIALBSCIERRE: TCurrencyField;
+    SinvDepFT_INVENTARIOINICIALUND: TCurrencyField;
+    SinvDepFT_INVENTARIOINICIALCIERRE: TCurrencyField;
+    SinvDepFT_CTDTRANSITO: TCurrencyField;
+    SinvDepFT_VISIBLE: TBooleanField;
+    SinvDepFT_CODEBARRA: TAutoIncField;
+    SinvDepFT_EXISTENCIAAJUSTE: TFloatField;
+    SinvDepBASE_AUTOINCREMENT: TAutoIncField;
+    SinvDepFT_CODE: TStringField;
     SinvloteFL_CODIGO: TStringField;
     SinvloteFL_LOTE: TStringField;
     SinvloteFL_RANDOM: TIntegerField;
@@ -43,31 +92,6 @@ type
     SinvloteFL_IMPUESTO2VISIBLE: TBooleanField;
     SinvloteFL_STATUS: TBooleanField;
     SinvloteBASE_AUTOINCREMENT: TAutoIncField;
-    qrConsulta: TDBISAMQuery;
-    tbCamposDestino: TJvMemoryData;
-    tbCamposOrigen: TJvMemoryData;
-    tbCamposOrigenCampoOrigen: TStringField;
-    tbCamposDestinoCampoDestino: TStringField;
-    tbCamposOrigenOrden: TIntegerField;
-    tbCamposDestinoNumeroCampoOrigen: TIntegerField;
-    tbCamposDestinoCampoOrigen: TStringField;
-    tbArchivo: TJvMemoryData;
-    tbCamposDestinoTipoDato: TIntegerField;
-    tbCamposDestinoTamanoDato: TIntegerField;
-    pdProceso: TJvProgressDialog;
-    SEnsambles: TDBISAMTable;
-    SEnsamblesFEN_CODIGO: TStringField;
-    SEnsamblesFEN_CODE: TAutoIncField;
-    SEnsamblesFEN_CTDPLANTILLA: TFloatField;
-    SEnsamblesFEN_CODEPARTE: TStringField;
-    SEnsamblesFEN_CANTIDAD: TFloatField;
-    SEnsamblesFEN_CODEPRESENTA: TStringField;
-    SEnsamblesFEN_ORIGENAUTO: TIntegerField;
-    SEnsamblesFEN_FACTORPRESENTA: TFloatField;
-    SEnsamblesFEN_DETALLE: TMemoField;
-    SEnsamblesFEN_OTRO1: TFloatField;
-    SEnsamblesFEN_TIPORECORD: TSmallintField;
-    Sinventario: TDBISAMTable;
     SinventarioFI_CODIGO: TStringField;
     SinventarioFI_DESCRIPCION: TStringField;
     SinventarioFI_CATEGORIA: TStringField;
@@ -139,7 +163,6 @@ type
     SinventarioFI_PRECIOLISTA: TBooleanField;
     SinventarioFI_APROVECHAPORC: TCurrencyField;
     SinventarioFI_ARANCEL: TStringField;
-    SinventarioFI_POSENTREGA: TBooleanField;
   private
     { Private declarations }
   public
@@ -153,11 +176,15 @@ type
     procedure AbrirInventario;
     procedure BorrarInventario;
     procedure ActualizarInventario;
+    procedure AbrirSFixed;
+    procedure BorrarSFixed;
+    procedure ActualizarSFixed;
     procedure CargarCamposOrigen( Archivo : String; Separador : char);
     procedure CargarCamposDestino( T : TDBISAMTable);
     procedure CargarArchivo( Archivo : String; Separador : char;
                 Tabla : tArchivos );
     procedure ImportarArchivo( Tabla : tArchivos; BorrarTabla : boolean);
+    function AdicionarExistenciaLote(Codigo, Lote : string; Random : LongInt; Cantidad : Double) : string;
   end;
 
 var
@@ -168,7 +195,7 @@ const
 
 implementation
 
-uses uBaseDatosA2, uTablasConBlobAdministrativo;
+uses uBaseDatosA2, uTablasConBlobAdministrativo, uVisualizarLog;
 
 {$R *.dfm}
 
@@ -181,12 +208,31 @@ end;
 
 procedure TdmDatos.AbrirInventario;
 begin
-  Sinventario.Open;
+  try
+    if not Sinventario.Active then
+      Sinventario.Open;
+  except on E: Exception do
+    ShowMessage('Ocurrió un error abriendo SInventario, ' + E.Message);
+  end;
+
 end;
 
 procedure TdmDatos.AbrirLotes;
 begin
-  Sinvlote.Open
+  try
+    if not Sinvlote.Active then
+      Sinvlote.Open;
+
+    if not SinvDep.Active then
+      SinvDep.Open;
+  except on E: Exception do
+    ShowMessage('Ocurrió un error abriendo Sinvlote, ' + E.Message);
+  end;
+end;
+
+procedure TdmDatos.AbrirSFixed;
+begin
+  dmAdministrativo.AbrirSFixed;
 end;
 
 procedure TdmDatos.ActualizarEnsambles;
@@ -200,16 +246,14 @@ begin
 
     qrConsulta.SQL.Text := 'SELECT Sinvlote.FL_RANDOM, SEnsambles.FEN_CODE FROM SEnsambles INNER JOIN Sinvlote ON (SEnsambles.FEN_CODEPARTE=Sinvlote.FL_CODIGO)  AND (SEnsambles.FEN_CODEPRESENTA=Sinvlote.FL_LOTE)';
     qrConsulta.ExecSQL;
-
   except
-
   end;
-
 end;
 
 procedure TdmDatos.ActualizarInventario;
 begin
-
+  if Sinventario.State in [dsEdit, dsInsert] then
+    Sinventario.Post;
 end;
 
 procedure TdmDatos.ActualizarLotes;
@@ -225,6 +269,50 @@ begin
   end;
 end;
 
+procedure TdmDatos.ActualizarSFixed;
+begin
+  if dmAdministrativo.sFixed.State in [dsEdit, dsInsert] then
+    dmAdministrativo.sFixed.Post;
+end;
+
+function TdmDatos.AdicionarExistenciaLote(Codigo, Lote: string; Random : LongInt;
+  Cantidad: Double) : string;
+var
+  Encontro : boolean;
+begin
+  result := '';
+  try
+    if SinvDep.Locate('FT_TIPO;FT_CODIGOPRODUCTO;FT_CODIGODEPOSITO;FT_LOTE;FT_LOTEAUTOINCREMENT',
+      VarArrayOf([4, Codigo, 1, lote, Random]), [])  then
+    begin
+      Encontro := SinvDepFT_LOTE.Value = Lote;
+      while not Encontro and not SinvDep.Eof and (SinvDepFT_CODIGOPRODUCTO.Value = Codigo) do
+      begin
+        Encontro := SinvDepFT_LOTE.Value = Lote;
+        SinvDep.Next;
+      end;
+      if Encontro then
+        SinvDep.Edit
+      else
+        SInvDep.Append;
+    end
+    else
+      SInvDep.Append;
+
+    SinvDepFT_TIPO.Value := 4;
+    SinvDepFT_CODIGOPRODUCTO.Value := Codigo;
+    SinvDepFT_CODIGODEPOSITO.Value := 1;
+    SinvDepFT_LOTE.Value := Lote;
+    SinvDepFT_LOTEAUTOINCREMENT.Value := Random;
+    SinvDepFT_EXISTENCIA.Value := Cantidad;
+    SinvDepFT_VISIBLE.Value := True;
+
+    SinvDep.Post;
+  except
+    Result := 'Error actualizando SInvDep con el codigo: ' + Codigo + ', lote: ' + Lote + ', existencia: ' + FloatToStr(Cantidad);
+  end;
+end;
+
 procedure TdmDatos.BorrarEnsambles;
 begin
   try
@@ -237,13 +325,28 @@ end;
 
 procedure TdmDatos.BorrarInventario;
 begin
+  try
+    qrConsulta.SQL.Text := 'Delete From SInventario';
+    qrConsulta.ExecSQL;
+  except
 
+  end;
 end;
 
 procedure TdmDatos.BorrarLotes;
 begin
   try
     qrConsulta.SQL.Text := 'Delete From SInvLote';
+    qrConsulta.ExecSQL;
+  except
+
+  end;
+end;
+
+procedure TdmDatos.BorrarSFixed;
+begin
+  try
+    qrConsulta.SQL.Text := 'Delete From SFixed Where FX_TIPO = ''B''';
     qrConsulta.ExecSQL;
   except
 
@@ -268,6 +371,8 @@ begin
     case Tabla of
       taLotes: AbrirLotes;
       taEnsambles : AbrirEnsambles;
+      taInventario : AbrirInventario;
+      taFixed : AbrirSFixed;
     end;
 
     tbArchivo.Close;
@@ -375,12 +480,20 @@ begin
     tbArchivo.Post;
 
     CloseFile(F);
-    CloseFile( Log);
+
+    if FileSize(Log) > 0 then
+    begin
+      CloseFile( Log);
+      VisualizarLog( ChangeFileExt(Archivo, '.log'));
+    end
+    else
+      CloseFile( Log);
 
     // Quita el filtro
     tbCamposDestino.Filtered := false;
 
     pdProceso.Hide;
+
   except
     pdProceso.Hide;
     CloseFile( Log);
@@ -468,12 +581,16 @@ var
     else
     begin
       case Tabla of
-        taLotes: Encontro := aArchivo.Locate('FL_CODIGO;FL_LOTE',
-                  VarArrayOf([tbArchivo.FieldByName('FL_CODIGO').Value, tbArchivo.FieldByName('FL_LOTE').Value]),[]);
+        taLotes: Encontro := aArchivo.Locate('FL_CODIGO;FL_LOTE;FL_RANDOM',
+                  VarArrayOf([tbArchivo.FieldByName('FL_CODIGO').Value,
+                              tbArchivo.FieldByName('FL_LOTE').Value,
+                              tbArchivo.FieldByName('FL_RANDOM').Value]),[]);
+
         taEnsambles: Encontro := aArchivo.Locate('FEN_CODIGO;FEN_CODEPARTE;FEN_CODEPRESENTA',
                   VarArrayOf([tbArchivo.FieldByName('FEN_CODIGO').Value,
                               tbArchivo.FieldByName('FEN_CODEPARTE').Value,
                               tbArchivo.FieldByName('FEN_CODEPRESENTA').Value]),[]);
+        taInventario: Encontro := aArchivo.Locate('FI_CODIGO', tbArchivo.FieldByName('FI_CODIGO').Value, []);
       end;
 
       if Encontro then
@@ -527,6 +644,14 @@ begin
               if Sinvlote.FieldByName('FL_CORRELATIVO').Value = Null then
                 Sinvlote.FieldByName('FL_CORRELATIVO').Value := i;
             end;
+
+            if Sinvlote.FieldByName('FL_EXISTENCIA').Value <> Null then
+            begin
+              AdicionarExistenciaLote(Sinvlote.FieldByName('FL_CODIGO').Value,
+                Sinvlote.FieldByName('FL_LOTE').Value, Sinvlote.FieldByName('FL_RANDOM').Value,
+                Sinvlote.FieldByName('FL_EXISTENCIA').Value);
+            end;
+
           end;
         taEnsambles:
           begin
@@ -534,7 +659,15 @@ begin
 
             if BorrarTabla then
             begin
-              // Busca el lote y actualiza
+
+            end;
+          end;
+        taInventario :
+          begin
+            AsignarCamposARegistro( Sinventario);
+
+            if BorrarTabla then
+            begin
             end;
           end;
       end;
@@ -547,12 +680,12 @@ begin
     case Tabla of
       taLotes: ActualizarLotes;
       taEnsambles : ActualizarEnsambles;
+      taInventario : ActualizarInventario;
     end;
 
-    pdProceso.Hide;
   except
-    pdProceso.Hide;
   end;
+  pdProceso.Hide;
 
 end;
 
