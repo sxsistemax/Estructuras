@@ -1,51 +1,56 @@
 inherited frPlantillas: TfrPlantillas
   Caption = 'Plantillas'
   ClientHeight = 515
-  ClientWidth = 822
-  ExplicitLeft = -95
-  ExplicitWidth = 838
+  ClientWidth = 909
+  ExplicitWidth = 925
   ExplicitHeight = 554
   PixelsPerInch = 96
   TextHeight = 13
   inherited Panel1: TPanel
     Top = 483
-    Width = 822
+    Width = 909
     ExplicitTop = 483
-    ExplicitWidth = 822
+    ExplicitWidth = 832
     inherited Panel2: TPanel
-      Left = 490
-      ExplicitLeft = 490
+      Left = 577
+      ExplicitLeft = 500
+      inherited btCancelar: TBitBtn
+        Visible = False
+      end
+      inherited btAceptar: TBitBtn
+        Visible = False
+      end
       inherited btSeleccionar: TBitBtn
         Enabled = False
       end
     end
   end
   inherited PageControl1: TPageControl
-    Width = 822
+    Width = 909
     Height = 483
     ActivePage = tsRegistro
-    ExplicitWidth = 822
+    ExplicitWidth = 832
     ExplicitHeight = 483
     inherited tsListado: TTabSheet
-      ExplicitWidth = 814
+      ExplicitWidth = 824
       ExplicitHeight = 452
       inherited dgGrid: TDBGrid
-        Width = 814
+        Width = 901
         Height = 426
         PopupMenu = pmPlantilla
         Columns = <
           item
             Expanded = False
-            FieldName = 'Fi_Codigo'
+            FieldName = 'FI_CODIGO'
             Title.Caption = 'Codigo'
-            Width = 106
+            Width = 82
             Visible = True
           end
           item
             Expanded = False
-            FieldName = 'Fi_Descripcion'
+            FieldName = 'FI_DESCRIPCION'
             Title.Caption = 'Descripcion'
-            Width = 367
+            Width = 309
             Visible = True
           end
           item
@@ -56,21 +61,30 @@ inherited frPlantillas: TfrPlantillas
           item
             Expanded = False
             FieldName = 'Costo'
+            Width = 87
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'PrecioSinImpuesto'
+            Width = 108
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'Impuesto'
+            Width = 82
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'Precio'
+            Width = 80
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Utilidad'
             Visible = True
           end
           item
@@ -80,11 +94,11 @@ inherited frPlantillas: TfrPlantillas
           end>
       end
       inherited pBusqueda: TPanel
-        Width = 814
-        ExplicitWidth = 814
+        Width = 901
+        ExplicitWidth = 824
         inherited Panel4: TPanel
-          Left = 625
-          ExplicitLeft = 625
+          Left = 712
+          ExplicitLeft = 635
           inherited cbCampoBusqueda: TComboBox
             Left = -8
             Items.Strings = (
@@ -98,31 +112,31 @@ inherited frPlantillas: TfrPlantillas
     inherited tsRegistro: TTabSheet
       ExplicitLeft = 4
       ExplicitTop = 27
-      ExplicitWidth = 814
+      ExplicitWidth = 824
       ExplicitHeight = 452
       inherited Bevel1: TBevel
-        Top = 223
-        Width = 814
+        Top = 185
+        Width = 901
         ExplicitLeft = 11
         ExplicitTop = 29
         ExplicitWidth = 818
       end
       inherited Bevel2: TBevel
-        Top = 225
-        Height = 225
+        Top = 187
+        Height = 263
         ExplicitTop = 231
         ExplicitHeight = 448
       end
       inherited Bevel3: TBevel
         Top = 450
-        Width = 814
+        Width = 901
         ExplicitTop = 450
         ExplicitWidth = 818
       end
       inherited Bevel4: TBevel
-        Left = 812
-        Top = 225
-        Height = 225
+        Left = 899
+        Top = 187
+        Height = 263
         ExplicitLeft = 816
         ExplicitTop = 231
         ExplicitHeight = 448
@@ -130,20 +144,22 @@ inherited frPlantillas: TfrPlantillas
       object Panel5: TPanel
         AlignWithMargins = True
         Left = 5
-        Top = 228
-        Width = 804
-        Height = 219
+        Top = 190
+        Width = 891
+        Height = 257
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 814
         object grComponentes: TDBGrid
           AlignWithMargins = True
           Left = 3
           Top = 3
-          Width = 798
-          Height = 213
+          Width = 885
+          Height = 251
           Align = alClient
           DataSource = dsComponentes
+          Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgTitleClick, dgTitleHotTrack]
           PopupMenu = pmComponentes
           TabOrder = 0
           TitleFont.Charset = DEFAULT_CHARSET
@@ -151,17 +167,17 @@ inherited frPlantillas: TfrPlantillas
           TitleFont.Height = -11
           TitleFont.Name = 'MS Sans Serif'
           TitleFont.Style = []
+          OnDblClick = aEditarExecute
           Columns = <
             item
               Expanded = False
               FieldName = 'Codigo'
-              Width = 108
               Visible = True
             end
             item
               Expanded = False
               FieldName = 'Descripcion'
-              Width = 405
+              Width = 358
               Visible = True
             end
             item
@@ -177,13 +193,13 @@ inherited frPlantillas: TfrPlantillas
             end
             item
               Expanded = False
-              FieldName = 'Costo'
+              FieldName = 'Existencia'
               Visible = True
             end
             item
               Expanded = False
-              FieldName = 'FX_COSTOS'
-              Visible = False
+              FieldName = 'Costo'
+              Visible = True
             end>
         end
       end
@@ -191,8 +207,8 @@ inherited frPlantillas: TfrPlantillas
         AlignWithMargins = True
         Left = 0
         Top = 0
-        Width = 814
-        Height = 223
+        Width = 901
+        Height = 185
         Margins.Left = 0
         Margins.Top = 0
         Margins.Right = 0
@@ -200,6 +216,7 @@ inherited frPlantillas: TfrPlantillas
         Align = alTop
         BevelInner = bvLowered
         TabOrder = 1
+        ExplicitLeft = 5
         object Label1: TLabel
           Left = 6
           Top = 4
@@ -238,7 +255,7 @@ inherited frPlantillas: TfrPlantillas
         end
         object GroupBox1: TGroupBox
           Left = 7
-          Top = 144
+          Top = 102
           Width = 524
           Height = 75
           Caption = ' Componentes '
@@ -400,102 +417,108 @@ inherited frPlantillas: TfrPlantillas
           Left = 537
           Top = 4
           Width = 270
-          Height = 214
+          Height = 173
           Caption = ' Costos '
           TabOrder = 3
           object Label4: TLabel
             Left = 16
-            Top = 24
+            Top = 22
             Width = 30
             Height = 13
             Caption = 'Costo:'
           end
-          object Label5: TLabel
-            Left = 16
-            Top = 51
-            Width = 38
-            Height = 13
-            Caption = 'Utilidad:'
-          end
           object Label6: TLabel
             Left = 16
-            Top = 78
+            Top = 41
             Width = 33
             Height = 13
             Caption = 'Precio:'
           end
           object Label7: TLabel
             Left = 16
-            Top = 105
+            Top = 60
             Width = 47
             Height = 13
             Caption = 'Valor IVA:'
           end
           object Label8: TLabel
             Left = 16
-            Top = 132
+            Top = 79
             Width = 57
             Height = 13
             Caption = 'Neto Venta:'
           end
           object Label9: TLabel
             Left = 16
-            Top = 159
+            Top = 117
             Width = 62
             Height = 13
             Caption = 'Rentabilidad:'
           end
-          object eCosto: TEdit
-            Left = 138
-            Top = 21
-            Width = 121
-            Height = 21
-            ReadOnly = True
-            TabOrder = 0
+          object Label3: TLabel
+            Left = 16
+            Top = 98
+            Width = 38
+            Height = 13
+            Caption = 'Utilidad:'
           end
-          object eUtilidad: TEdit
+          object eCosto: TDBText
             Left = 138
-            Top = 48
+            Top = 19
             Width = 121
             Height = 21
-            ReadOnly = True
-            TabOrder = 1
+            Alignment = taRightJustify
+            DataField = 'Costo'
+            DataSource = dsDataSource
           end
-          object ePrecio: TEdit
+          object ePrecio: TDBText
             Left = 138
-            Top = 75
+            Top = 38
             Width = 121
             Height = 21
-            ReadOnly = True
-            TabOrder = 2
+            Alignment = taRightJustify
+            DataField = 'PrecioSinImpuesto'
+            DataSource = dsDataSource
           end
-          object eValorIVA: TEdit
+          object eValorIVA: TDBText
             Left = 138
-            Top = 102
+            Top = 57
             Width = 121
             Height = 21
-            ReadOnly = True
-            TabOrder = 3
+            Alignment = taRightJustify
+            DataField = 'Impuesto'
+            DataSource = dsDataSource
           end
-          object eNetoVenta: TEdit
+          object eNetoVenta: TDBText
             Left = 138
-            Top = 129
+            Top = 76
             Width = 121
             Height = 21
-            ReadOnly = True
-            TabOrder = 4
+            Alignment = taRightJustify
+            DataField = 'Precio'
+            DataSource = dsDataSource
           end
-          object eRentabilidad: TEdit
+          object eRentabilidad: TDBText
             Left = 138
-            Top = 156
+            Top = 114
             Width = 121
             Height = 21
-            ReadOnly = True
-            TabOrder = 5
+            Alignment = taRightJustify
+            DataField = 'Rentabilidad'
+            DataSource = dsDataSource
+          end
+          object eUtilidad: TDBText
+            Left = 138
+            Top = 95
+            Width = 121
+            Height = 21
+            Alignment = taRightJustify
+            DataField = 'Utilidad'
+            DataSource = dsDataSource
           end
           object bRecalcular: TBitBtn
             Left = 72
-            Top = 183
+            Top = 141
             Width = 137
             Height = 25
             Action = aRecalcular
@@ -541,7 +564,7 @@ inherited frPlantillas: TfrPlantillas
               FFFFFFFFFFFFFFFFFFFFFFFFFFC3BFBDC3BFBDC9B9B1FFFFFFFFFFFFFFFFFFFF
               FFFFFFFFFFFFFFFFFFFFFFFFFFFF}
             ParentDoubleBuffered = False
-            TabOrder = 6
+            TabOrder = 0
           end
         end
       end
@@ -553,17 +576,12 @@ inherited frPlantillas: TfrPlantillas
     ExplicitWidth = 184
   end
   inherited dsDataSource: TDataSource
-    Left = 368
-    Top = 16
-  end
-  object dsComponentes: TDataSource
-    AutoEdit = False
-    DataSet = dmDatos.qrComponentes
-    Left = 512
+    Left = 344
+    Top = 48
   end
   object pmPlantilla: TPopupMenu
     Left = 480
-    Top = 64
+    Top = 48
     object Cargardesde1: TMenuItem
       Action = aCargarDesde
     end
@@ -604,6 +622,7 @@ inherited frPlantillas: TfrPlantillas
     object aRecalcular: TAction
       Category = 'Plantillas'
       Caption = 'Recalcular'
+      OnExecute = aRecalcularExecute
     end
     object aEliminarTodosComponentes: TAction
       Category = 'Plantillas'
@@ -617,8 +636,8 @@ inherited frPlantillas: TfrPlantillas
     end
   end
   object pmComponentes: TPopupMenu
-    Left = 328
-    Top = 128
+    Left = 272
+    Top = 48
     object Adicionar1: TMenuItem
       Action = AAdicionarComponente
     end
@@ -628,5 +647,11 @@ inherited frPlantillas: TfrPlantillas
     object BorrarComponente2: TMenuItem
       Action = aBorrarComponente
     end
+  end
+  object dsComponentes: TDataSource
+    AutoEdit = False
+    DataSet = dmDatos.qrComponentes
+    Left = 408
+    Top = 48
   end
 end

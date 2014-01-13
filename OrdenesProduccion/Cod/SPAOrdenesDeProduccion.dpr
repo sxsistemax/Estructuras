@@ -9,11 +9,13 @@ uses
   uUtilidadesSPA in '..\..\..\CompartidosA2\uUtilidadesSPA.pas',
   uPlantillas in 'uPlantillas.pas' {frPlantillas},
   uCargarComponentes in 'uCargarComponentes.pas' {frCargarComponentes},
-  MantenimientoSPA in 'C:\Vcl\Comun\MantenimientoSPA.pas' {fmBaseMantenimiento},
-  uSeleccionarComponentes in 'uSeleccionarComponentes.pas' {frSeleccionarComponentes},
   uDuplicarComponente in 'uDuplicarComponente.pas' {frDuplicarComponentes},
   uAdicionarComponente in 'uAdicionarComponente.pas' {frAdicionarComponente},
-  uSeleccionarInventario in 'uSeleccionarInventario.pas' {frSeleccionarInventario};
+  uSeleccionarInventario in 'uSeleccionarInventario.pas' {frSeleccionarInventario},
+  uRecalcular in 'uRecalcular.pas' {frRecalcularCosto},
+  MantenimientoSPA in 'C:\Vcl\Comun\MantenimientoSPA.pas' {fmBaseMantenimiento},
+  uSeleccionarPedidos in 'uSeleccionarPedidos.pas' {frSeleccionarPedido},
+  uGenerarOrden in 'uGenerarOrden.pas' {frGenerarOrden};
 
 {$R *.res}
 

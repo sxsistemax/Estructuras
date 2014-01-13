@@ -1,23 +1,24 @@
 inherited frSeleccionarInventario: TfrSeleccionarInventario
   Caption = 'Seleccionar Inventario'
   ClientHeight = 492
-  ClientWidth = 790
-  ExplicitWidth = 806
+  ClientWidth = 934
+  ExplicitLeft = -63
+  ExplicitWidth = 950
   ExplicitHeight = 531
   PixelsPerInch = 96
   TextHeight = 13
   inherited Panel1: TPanel
     Top = 460
-    Width = 790
+    Width = 934
     ExplicitTop = 460
     ExplicitWidth = 790
     inherited Panel2: TPanel
-      Left = 458
+      Left = 602
       ExplicitLeft = 458
     end
   end
   inherited PageControl1: TPageControl
-    Width = 790
+    Width = 934
     Height = 460
     ExplicitWidth = 790
     ExplicitHeight = 460
@@ -25,14 +26,14 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
       ExplicitWidth = 782
       ExplicitHeight = 429
       inherited dgGrid: TDBGrid
-        Width = 782
+        Width = 926
         Height = 403
       end
       inherited pBusqueda: TPanel
-        Width = 782
+        Width = 926
         ExplicitWidth = 782
         inherited Panel4: TPanel
-          Left = 593
+          Left = 737
           ExplicitLeft = 593
           inherited cbCampoBusqueda: TComboBox
             Items.Strings = (

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, Mask, DBCtrls, ExtCtrls, DB;
+  Dialogs, StdCtrls, Buttons, Mask, DBCtrls, ExtCtrls, DB, uDatos;
 
 type
   TfrAdicionarComponente = class(TForm)
@@ -15,8 +15,8 @@ type
     CodigoDestino: TLabel;
     SpeedButton1: TSpeedButton;
     Label3: TLabel;
-    eCodigo: TDBEdit;
-    eDescripcion: TDBEdit;
+    eCodigo: TLabel;
+    eDescripcion: TLabel;
     eComponente: TEdit;
     eDescripcionComponente: TEdit;
     Panel1: TPanel;
@@ -34,28 +34,35 @@ type
     { Private declarations }
   public
     { Public declarations }
+    FPlantilla, FDescripcion : string;
     FComponente, FLote: String;
     FCantidad : double;
+    FTipoProceso : tProcesoComponentes;
+    FTipoOperacion : integer;
   end;
 
 var
   frAdicionarComponente: TfrAdicionarComponente;
 
-procedure AdicionarComponente(Componente, Lote: String; Cantidad : Double);
+procedure AdicionarComponente(Plantilla, Descripcion, Componente, Lote: String; Cantidad : Double; TipoProceso : tProcesoComponentes; TipoOperacion : integer );
 
 implementation
 
-uses uSeleccionarInventario, uDatos;
+uses uSeleccionarInventario;
 
 {$R *.dfm}
 
-procedure AdicionarComponente(Componente, Lote: String; Cantidad : Double);
+procedure AdicionarComponente(Plantilla, Descripcion, Componente, Lote: String; Cantidad : Double; TipoProceso : tProcesoComponentes; TipoOperacion : integer);
 begin
   with TfrAdicionarComponente.Create(Application) do
   begin
+    eCodigo.Caption := Plantilla;
+    eDescripcion.Caption := Descripcion;
     FComponente := Componente;
     FLote := Lote;
     FCantidad := Cantidad;
+    FTipoProceso := TipoProceso;
+    FTipoOperacion :=  TipoOperacion;
     ShowModal;
     Free;
   end;
@@ -69,20 +76,16 @@ begin
     eComponente.SetFocus;
   end;
 
-  if eLote.Text = '' then
-  begin
-    ShowMessage('Debe seleccionar un lote. ');
-    eLote.SetFocus;
-  end;
-
   if eCantidad.Text = '' then
   begin
     ShowMessage('Debe digitar una cantidad para el componente. ');
     eCantidad.SetFocus;
   end;
 
-  dmDatos.ActualizaarComponente(eCodigo.Text, eComponente.Text, eLote.Text, StrToFloat(eCantidad.Text));
-  dmDatos.AbrirComponentes(eCodigo.Text);
+  dmDatos.ActualizarComponente(eCodigo.Caption, eComponente.Text, eLote.Text, StrToFloat(eCantidad.Text), FTipoProceso,  FTipoOperacion);
+
+  if FTipoProceso = tpcConsulta then
+    dmDatos.AbrirComponentes(eCodigo.Caption);
 end;
 
 procedure TfrAdicionarComponente.eComponenteExit(Sender: TObject);

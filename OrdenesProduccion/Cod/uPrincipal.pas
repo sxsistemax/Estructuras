@@ -21,10 +21,12 @@ type
     dsConfiguracion: TDataSource;
     Label1: TLabel;
     DBLookupComboBox1: TDBLookupComboBox;
+    aGenerarOrden: TAction;
     procedure aPlantillasExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btGuardarClick(Sender: TObject);
     procedure btCancelarClick(Sender: TObject);
+    procedure aGenerarOrdenExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,9 +40,14 @@ var
 implementation
 
 uses uUtilidadesSPA, uBaseDatosA2, uPlantillas, uDatos,
-  uTablasConBlobAdministrativo;
+  uTablasConBlobAdministrativo, uGenerarOrden;
 
 {$R *.dfm}
+
+procedure TfrPrincipal.aGenerarOrdenExecute(Sender: TObject);
+begin
+  GenerarOrdenes;
+end;
 
 procedure TfrPrincipal.aPlantillasExecute(Sender: TObject);
 begin
@@ -98,6 +105,12 @@ begin
       2 : begin
             Self.Visible := false;
             CargarPlantillas;
+            if not ModoPruebas then
+              Halt(1);
+          end;
+      3 : begin
+            Self.Visible := false;
+              GenerarOrdenes;;
             if not ModoPruebas then
               Halt(1);
           end;

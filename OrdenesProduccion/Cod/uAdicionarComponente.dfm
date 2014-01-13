@@ -23,9 +23,6 @@ object frAdicionarComponente: TfrAdicionarComponente
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitLeft = -22
-    ExplicitWidth = 578
-    ExplicitHeight = 226
     object Label1: TLabel
       Left = 16
       Top = 16
@@ -102,25 +99,17 @@ object frAdicionarComponente: TfrAdicionarComponente
       Height = 13
       Caption = 'Cantidad'
     end
-    object eCodigo: TDBEdit
+    object eCodigo: TLabel
       Left = 16
       Top = 35
-      Width = 121
-      Height = 21
-      DataField = 'FI_CODIGO'
-      DataSource = DataSource1
-      ReadOnly = True
-      TabOrder = 0
+      Width = 3
+      Height = 13
     end
-    object eDescripcion: TDBEdit
+    object eDescripcion: TLabel
       Left = 16
       Top = 83
-      Width = 545
-      Height = 21
-      DataField = 'FI_DESCRIPCION'
-      DataSource = DataSource1
-      ReadOnly = True
-      TabOrder = 1
+      Width = 3
+      Height = 13
     end
     object eComponente: TEdit
       Left = 16
@@ -128,7 +117,7 @@ object frAdicionarComponente: TfrAdicionarComponente
       Width = 121
       Height = 21
       ReadOnly = True
-      TabOrder = 2
+      TabOrder = 1
       OnExit = eComponenteExit
     end
     object eDescripcionComponente: TEdit
@@ -144,14 +133,14 @@ object frAdicionarComponente: TfrAdicionarComponente
       Top = 235
       Width = 121
       Height = 21
-      TabOrder = 4
+      TabOrder = 0
     end
     object eCantidad: TEdit
       Left = 176
       Top = 235
       Width = 121
       Height = 21
-      TabOrder = 5
+      TabOrder = 2
       Text = '0'
     end
   end
@@ -163,9 +152,7 @@ object frAdicionarComponente: TfrAdicionarComponente
     Align = alBottom
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitLeft = -22
-    ExplicitTop = 226
-    ExplicitWidth = 578
+    ExplicitTop = 262
     object BitBtn1: TBitBtn
       Left = 415
       Top = 6

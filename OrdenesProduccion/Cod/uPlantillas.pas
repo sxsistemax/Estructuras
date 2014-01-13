@@ -10,7 +10,6 @@ uses
 
 type
   TfrPlantillas = class(TfmBaseMantenimiento)
-    dsComponentes: TDataSource;
     Panel5: TPanel;
     grComponentes: TDBGrid;
     Panel3: TPanel;
@@ -24,17 +23,15 @@ type
     bEliminarComponentes: TBitBtn;
     JvGroupBox1: TJvGroupBox;
     Label4: TLabel;
-    Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
-    eCosto: TEdit;
-    eUtilidad: TEdit;
-    ePrecio: TEdit;
-    eValorIVA: TEdit;
-    eNetoVenta: TEdit;
-    eRentabilidad: TEdit;
+    eCosto: TDBText;
+    ePrecio: TDBText;
+    eValorIVA: TDBText;
+    eNetoVenta: TDBText;
+    eRentabilidad: TDBText;
     bRecalcular: TBitBtn;
     pmPlantilla: TPopupMenu;
     alPlantillas: TActionList;
@@ -54,7 +51,9 @@ type
     BorrarComponente1: TMenuItem;
     aEditar: TAction;
     BorrarComponente2: TMenuItem;
-    procedure dgGridCellClick(Column: TColumn);
+    Label3: TLabel;
+    eUtilidad: TDBText;
+    dsComponentes: TDataSource;
     procedure dgGridDblClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
@@ -64,6 +63,7 @@ type
     procedure aEditarExecute(Sender: TObject);
     procedure aEliminarTodosComponentesExecute(Sender: TObject);
     procedure aBorrarComponenteExecute(Sender: TObject);
+    procedure aRecalcularExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -77,14 +77,14 @@ var
 implementation
 
 uses uDatos, uDuplicarComponente, uBaseDatosA2, uTablasConBlobAdministrativo,
-  uCargarComponentes, uAdicionarComponente;
+  uCargarComponentes, uAdicionarComponente, uRecalcular;
 
 {$R *.dfm}
 
 procedure TfrPlantillas.AAdicionarComponenteExecute(Sender: TObject);
 begin
   inherited;
-  AdicionarComponente('', '', 0);
+  AdicionarComponente(eCodigo.Text, eDescripcion.Text, '', '', 0, tpcConsulta, 0);
 end;
 
 procedure TfrPlantillas.aBorrarComponenteExecute(Sender: TObject);
@@ -114,8 +114,8 @@ end;
 procedure TfrPlantillas.aEditarExecute(Sender: TObject);
 begin
   inherited;
-  AdicionarComponente(dmDatos.qrComponentesCodigo.Value, dmDatos.qrComponentesLote.Value,
-        dmDatos.qrComponentesCantidad.Value);
+  AdicionarComponente(eCodigo.Text, eDescripcion.Text, dmDatos.qrComponentesCodigo.Value, dmDatos.qrComponentesLote.Value,
+        dmDatos.qrComponentesCantidad.Value, tpcConsulta, 1);
 end;
 
 procedure TfrPlantillas.aEliminarTodosComponentesExecute(Sender: TObject);
@@ -128,17 +128,16 @@ begin
   end;
 end;
 
+procedure TfrPlantillas.aRecalcularExecute(Sender: TObject);
+begin
+  inherited;
+  Recalcular(eCodigo.Text, eCosto.Caption, ePrecio.Caption, eValorIVA.Caption, eNetoVenta.Caption, eUtilidad.Caption, eRentabilidad.Caption );
+end;
+
 procedure TfrPlantillas.DBNavigator1Click(Sender: TObject;
   Button: TNavigateBtn);
 begin
   PonerFiltroComponentes;
-  inherited;
-
-end;
-
-procedure TfrPlantillas.dgGridCellClick(Column: TColumn);
-begin
-//  PonerFiltroComponentes;
   inherited;
 
 end;

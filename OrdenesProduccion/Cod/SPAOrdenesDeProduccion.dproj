@@ -64,12 +64,6 @@
 			<DCCReference Include="uCargarComponentes.pas">
 				<Form>frCargarComponentes</Form>
 			</DCCReference>
-			<DCCReference Include="C:\Vcl\Comun\MantenimientoSPA.pas">
-				<Form>fmBaseMantenimiento</Form>
-			</DCCReference>
-			<DCCReference Include="uSeleccionarComponentes.pas">
-				<Form>frSeleccionarComponentes</Form>
-			</DCCReference>
 			<DCCReference Include="uDuplicarComponente.pas">
 				<Form>frDuplicarComponentes</Form>
 			</DCCReference>
@@ -79,6 +73,19 @@
 			<DCCReference Include="uSeleccionarInventario.pas">
 				<Form>frSeleccionarInventario</Form>
 			</DCCReference>
+			<DCCReference Include="uRecalcular.pas">
+				<Form>frRecalcularCosto</Form>
+			</DCCReference>
+			<DCCReference Include="C:\Vcl\Comun\MantenimientoSPA.pas">
+				<Form>fmBaseMantenimiento</Form>
+			</DCCReference>
+			<DCCReference Include="uSeleccionarPedidos.pas">
+				<Form>frSeleccionarPedido</Form>
+			</DCCReference>
+			<DCCReference Include="uGenerarOrden.pas">
+				<Form>frGenerarOrden</Form>
+			</DCCReference>
+			<None Include="SMenuTerceros.Cfg"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -108,11 +115,11 @@
 					</Parameters>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
-						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">0</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Build">10</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -124,7 +131,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">SPA S.A.S.</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">0.1.0.0</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">0.1.0.10</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

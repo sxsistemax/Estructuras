@@ -2,7 +2,7 @@ object frPrincipal: TfrPrincipal
   Left = 0
   Top = 0
   Caption = 'Configuraci'#243'n Ordenes de Producci'#243'n'
-  ClientHeight = 465
+  ClientHeight = 98
   ClientWidth = 604
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,10 +19,11 @@ object frPrincipal: TfrPrincipal
     Left = 0
     Top = 0
     Width = 604
-    Height = 408
+    Height = 63
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
+    ExplicitHeight = 408
     object Label1: TLabel
       Left = 16
       Top = 13
@@ -43,21 +44,22 @@ object frPrincipal: TfrPrincipal
   end
   object Panel2: TPanel
     Left = 0
-    Top = 408
+    Top = 63
     Width = 604
-    Height = 57
+    Height = 35
     Align = alBottom
     BevelOuter = bvNone
     Caption = '`'
     TabOrder = 1
+    ExplicitTop = 92
     object pAcciones: TActionToolBar
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 52
+      Width = 355
       Height = 51
       ActionManager = ActionManager1
-      Align = alLeft
+      Align = alNone
       Color = clMenuBar
       ColorMap.HighlightColor = clWhite
       ColorMap.UnusedColor = clWhite
@@ -67,7 +69,6 @@ object frPrincipal: TfrPrincipal
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
-      Orientation = boTopToBottom
       ParentFont = False
       Spacing = 0
     end
@@ -75,10 +76,11 @@ object frPrincipal: TfrPrincipal
       Left = 359
       Top = 0
       Width = 245
-      Height = 57
+      Height = 35
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitHeight = 56
       object btCancelar: TBitBtn
         Left = 82
         Top = 6
@@ -147,20 +149,27 @@ object frPrincipal: TfrPrincipal
           item
             Action = aPlantillas
             Caption = '&Plantillas'
+          end
+          item
+            Action = aGenerarOrden
           end>
         ActionBar = pAcciones
       end>
-    Left = 360
-    Top = 72
+    Left = 344
+    Top = 16
     StyleName = 'Platform Default'
     object aPlantillas: TAction
       Caption = 'Plantillas'
       OnExecute = aPlantillasExecute
     end
+    object aGenerarOrden: TAction
+      Caption = 'Generar Orden'
+      OnExecute = aGenerarOrdenExecute
+    end
   end
   object dsConfiguracion: TDataSource
     DataSet = dmDatos.SPAOrdenesConfiguracion
-    Left = 216
-    Top = 88
+    Left = 440
+    Top = 16
   end
 end
