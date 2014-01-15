@@ -2,7 +2,6 @@ inherited frSeleccionarPedido: TfrSeleccionarPedido
   Caption = 'Pedidos Pendiente'
   ClientHeight = 285
   ClientWidth = 809
-  ExplicitLeft = -65
   ExplicitWidth = 825
   ExplicitHeight = 324
   PixelsPerInch = 96
@@ -11,23 +10,23 @@ inherited frSeleccionarPedido: TfrSeleccionarPedido
     Top = 253
     Width = 809
     ExplicitTop = 253
-    ExplicitWidth = 723
+    ExplicitWidth = 809
     inherited Panel2: TPanel
       Left = 477
-      ExplicitLeft = 391
+      ExplicitLeft = 477
     end
   end
   inherited PageControl1: TPageControl
     Width = 809
     Height = 253
-    ExplicitWidth = 723
+    ExplicitWidth = 809
     ExplicitHeight = 253
     inherited tsListado: TTabSheet
-      ExplicitWidth = 715
+      ExplicitWidth = 801
       ExplicitHeight = 222
       inherited dgGrid: TDBGrid
         Width = 801
-        Height = 196
+        Height = 153
         Columns = <
           item
             Expanded = False
@@ -93,23 +92,14 @@ inherited frSeleccionarPedido: TfrSeleccionarPedido
             Visible = False
           end>
       end
-      inherited pBusqueda: TPanel
+      inherited pBuscar: TPanel
         Width = 801
-        ExplicitWidth = 715
-        inherited Panel4: TPanel
-          Left = 612
-          ExplicitLeft = 526
-          inherited cbCampoBusqueda: TComboBox
-            Items.Strings = (
-              'Documento'
-              'Codigo')
-          end
-        end
+      end
+      inherited pFiltro: TPanel
+        Width = 801
       end
     end
     inherited tsRegistro: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 27
       ExplicitWidth = 715
       ExplicitHeight = 222
       inherited Bevel1: TBevel
@@ -133,8 +123,5 @@ inherited frSeleccionarPedido: TfrSeleccionarPedido
         ExplicitHeight = 218
       end
     end
-  end
-  inherited dsDataSource: TDataSource
-    DataSet = dmDatos.qrPedidosPendientes
   end
 end

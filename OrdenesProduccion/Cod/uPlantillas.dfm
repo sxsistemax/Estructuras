@@ -10,10 +10,10 @@ inherited frPlantillas: TfrPlantillas
     Top = 483
     Width = 909
     ExplicitTop = 483
-    ExplicitWidth = 832
+    ExplicitWidth = 909
     inherited Panel2: TPanel
       Left = 577
-      ExplicitLeft = 500
+      ExplicitLeft = 577
       inherited btCancelar: TBitBtn
         Visible = False
       end
@@ -28,15 +28,14 @@ inherited frPlantillas: TfrPlantillas
   inherited PageControl1: TPageControl
     Width = 909
     Height = 483
-    ActivePage = tsRegistro
-    ExplicitWidth = 832
+    ExplicitWidth = 909
     ExplicitHeight = 483
     inherited tsListado: TTabSheet
-      ExplicitWidth = 824
+      ExplicitWidth = 901
       ExplicitHeight = 452
       inherited dgGrid: TDBGrid
         Width = 901
-        Height = 426
+        Height = 383
         PopupMenu = pmPlantilla
         Columns = <
           item
@@ -93,26 +92,22 @@ inherited frPlantillas: TfrPlantillas
             Visible = True
           end>
       end
-      inherited pBusqueda: TPanel
+      inherited pBuscar: TPanel
         Width = 901
-        ExplicitWidth = 824
-        inherited Panel4: TPanel
-          Left = 712
-          ExplicitLeft = 635
-          inherited cbCampoBusqueda: TComboBox
-            Left = -8
-            Items.Strings = (
-              'FI_CODIGO'
-              'FI_DESCRIPCION')
-            ExplicitLeft = -8
-          end
+      end
+      inherited pFiltro: TPanel
+        Width = 901
+      end
+      inherited pCampos: TPanel
+        inherited cbCampoBusqueda: TComboBox
+          Items.Strings = (
+            'FI_DESCRIPCION'
+            'FI_CODIGO')
         end
       end
     end
     inherited tsRegistro: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 27
-      ExplicitWidth = 824
+      ExplicitWidth = 901
       ExplicitHeight = 452
       inherited Bevel1: TBevel
         Top = 185
@@ -150,7 +145,6 @@ inherited frPlantillas: TfrPlantillas
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 814
         object grComponentes: TDBGrid
           AlignWithMargins = True
           Left = 3
@@ -216,7 +210,6 @@ inherited frPlantillas: TfrPlantillas
         Align = alTop
         BevelInner = bvLowered
         TabOrder = 1
-        ExplicitLeft = 5
         object Label1: TLabel
           Left = 6
           Top = 4
@@ -576,6 +569,7 @@ inherited frPlantillas: TfrPlantillas
     ExplicitWidth = 184
   end
   inherited dsDataSource: TDataSource
+    DataSet = dmDatos.tbEnsambles
     Left = 344
     Top = 48
   end

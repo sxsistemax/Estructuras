@@ -51,7 +51,6 @@ var
 function Recalcular(Codigo: String; pCosto, pPrecio, pValorIVA, pNetoVenta, pUtilidad, pRentabilidad : string) : boolean;
 procedure MostrarCosto(Codigo: String);
 
-
 implementation
 
 
@@ -130,7 +129,7 @@ begin
   Rentabilidad := dmDatos.Valor(eRentabilidad.Text);
 
   // Calcula el precio
-  if Rentabilidad > 0 then
+  if (Rentabilidad / 100)  <> 1 then
     Precio := Costo / ( 1 - (Rentabilidad / 100))
   else
     Precio := Costo;

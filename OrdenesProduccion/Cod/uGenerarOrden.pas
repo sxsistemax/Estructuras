@@ -118,6 +118,7 @@ end;
 
 procedure TfrGenerarOrden.SpeedButton1Click(Sender: TObject);
 begin
+  dmDatos.AbrirArchivosParaOrdenes;
   ePedido.Text := TfrSeleccionarPedido.Seleccionar(dmDatos.qrPedidosPendientes, true, 'Documento');
   if ePedido.Text <> '' then
   begin
@@ -125,7 +126,7 @@ begin
     lCliente.Caption := dmDatos.qrPedidosPendientesCliente.Value;
     lDescripcion.Caption := dmDatos.qrPedidosPendientesDescripcion.Value;
     eCantidad.Text := dmDatos.qrPedidosPendientesCantidad.AsString;
-    lVendedor.Caption := dmDatos.qrPedidosPendientesVendedor.Value;
+    lVendedor.Caption := dmDatos.qrPedidosPendientesVendedor.AsString;
     dmDatos.CargarTablaComponentes(ePlantilla.Text);
   end;
 end;

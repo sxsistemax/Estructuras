@@ -22,11 +22,13 @@ type
     Label1: TLabel;
     DBLookupComboBox1: TDBLookupComboBox;
     aGenerarOrden: TAction;
+    aProcesarCostos: TAction;
     procedure aPlantillasExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btGuardarClick(Sender: TObject);
     procedure btCancelarClick(Sender: TObject);
     procedure aGenerarOrdenExecute(Sender: TObject);
+    procedure aProcesarCostosExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -40,7 +42,7 @@ var
 implementation
 
 uses uUtilidadesSPA, uBaseDatosA2, uPlantillas, uDatos,
-  uTablasConBlobAdministrativo, uGenerarOrden;
+  uTablasConBlobAdministrativo, uGenerarOrden, uProcesarCostosPlantillas;
 
 {$R *.dfm}
 
@@ -52,6 +54,11 @@ end;
 procedure TfrPrincipal.aPlantillasExecute(Sender: TObject);
 begin
   CargarPlantillas;
+end;
+
+procedure TfrPrincipal.aProcesarCostosExecute(Sender: TObject);
+begin
+  RecalcularCostosPlantillas;
 end;
 
 procedure TfrPrincipal.btCancelarClick(Sender: TObject);
@@ -82,7 +89,7 @@ begin
     dmBasesDatos.AbrirSEmpresa;
 
     // Conecta la base de datos
-    dmBasesDatos.ConectarDB(dmBasesDatos.sEmpresaFE_DIRDATOS.Value);
+    dmBasesDatos.ConectarDB(dmBasesDatos.sEmpresaFE_DIRDATOS.AsString);
 
     //dmDatos.AbrirSEnsambles;
     dmDatos.AbrirSFixed;
@@ -111,6 +118,12 @@ begin
       3 : begin
             Self.Visible := false;
               GenerarOrdenes;;
+            if not ModoPruebas then
+              Halt(1);
+          end;
+      4 : begin
+            Self.Visible := false;
+              RecalcularCostosPlantillas;;
             if not ModoPruebas then
               Halt(1);
           end;

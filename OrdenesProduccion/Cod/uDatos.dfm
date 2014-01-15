@@ -550,16 +550,19 @@ object dmDatos: TdmDatos
     Top = 72
     object tbEnsamblesFI_CODIGO: TStringField
       FieldName = 'FI_CODIGO'
+      Origin = 'Sinventario.FI_CODIGO'
       Required = True
       Size = 30
     end
     object tbEnsamblesFI_DESCRIPCION: TStringField
       FieldName = 'FI_DESCRIPCION'
+      Origin = 'Sinventario.FI_DESCRIPCION'
       Required = True
       Size = 40
     end
     object tbEnsamblesFI_CLASIFICACION: TIntegerField
       FieldName = 'FI_CLASIFICACION'
+      Origin = 'Sinventario.FI_CLASIFICACION'
     end
     object tbEnsamblesCosto: TFloatField
       FieldKind = fkCalculated
@@ -1820,5 +1823,45 @@ object dmDatos: TdmDatos
     object tbPlantillasRentabilidad: TFloatField
       FieldName = 'Rentabilidad'
     end
+  end
+  object qrSeleccionarLotes: TDBISAMQuery
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    SQL.Strings = (
+      'SELECT '
+      '  Sinvlote.FL_LOTE Lote,'
+      '  Sinvlote.FL_RANDOM Random'
+      'FROM'
+      ' Sinvlote'
+      'Where Sinvlote.FL_CODIGO = :Codigo')
+    Params = <
+      item
+        DataType = ftString
+        Name = 'Codigo'
+      end>
+    Left = 440
+    Top = 192
+    ParamData = <
+      item
+        DataType = ftString
+        Name = 'Codigo'
+      end>
+    object qrSeleccionarLotesLote: TStringField
+      FieldName = 'Lote'
+      Size = 50
+    end
+    object qrSeleccionarLotesRandom: TIntegerField
+      FieldName = 'Random'
+      Visible = False
+    end
+  end
+  object pdProgreso1: TJvProgressDialog
+    Caption = 'Procesando'
+    Interval = 1
+    ShowCancel = False
+    Text = 'Esto es una prueba'
+    OnCancel = pdProgreso1Cancel
+    Left = 296
+    Top = 168
   end
 end

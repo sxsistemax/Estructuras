@@ -2,7 +2,7 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
   Caption = 'Seleccionar Inventario'
   ClientHeight = 492
   ClientWidth = 934
-  ExplicitLeft = -63
+  ExplicitLeft = -161
   ExplicitWidth = 950
   ExplicitHeight = 531
   PixelsPerInch = 96
@@ -11,45 +11,48 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
     Top = 460
     Width = 934
     ExplicitTop = 460
-    ExplicitWidth = 790
+    ExplicitWidth = 934
     inherited Panel2: TPanel
       Left = 602
-      ExplicitLeft = 458
+      ExplicitLeft = 602
     end
   end
   inherited PageControl1: TPageControl
     Width = 934
     Height = 460
-    ExplicitWidth = 790
+    ExplicitWidth = 934
     ExplicitHeight = 460
     inherited tsListado: TTabSheet
-      ExplicitWidth = 782
+      ExplicitWidth = 926
       ExplicitHeight = 429
       inherited dgGrid: TDBGrid
         Width = 926
-        Height = 403
+        Height = 360
       end
-      inherited pBusqueda: TPanel
+      inherited pBuscar: TPanel
         Width = 926
-        ExplicitWidth = 782
-        inherited Panel4: TPanel
-          Left = 737
-          ExplicitLeft = 593
-          inherited cbCampoBusqueda: TComboBox
-            Items.Strings = (
-              'Codigo'
-              'Descripcion')
-          end
+        ExplicitWidth = 926
+        ExplicitHeight = 34
+      end
+      inherited pFiltro: TPanel
+        Width = 926
+        ExplicitWidth = 926
+      end
+      inherited pCampos: TPanel
+        inherited cbCampoBusqueda: TComboBox
+          Top = 6
+          Items.Strings = (
+            'Descripcion'
+            'Codigo')
+          ExplicitTop = 6
         end
       end
     end
     inherited tsRegistro: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 27
-      ExplicitWidth = 782
+      ExplicitWidth = 926
       ExplicitHeight = 429
       inherited Bevel1: TBevel
-        Width = 782
+        Width = 926
         ExplicitWidth = 782
       end
       inherited Bevel2: TBevel
@@ -58,12 +61,12 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
       end
       inherited Bevel3: TBevel
         Top = 427
-        Width = 782
+        Width = 926
         ExplicitTop = 427
         ExplicitWidth = 782
       end
       inherited Bevel4: TBevel
-        Left = 780
+        Left = 924
         Height = 425
         ExplicitLeft = 780
         ExplicitHeight = 425
@@ -105,8 +108,6 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
     end
   end
   inherited dsDataSource: TDataSource
-    DataSet = dmDatos.qrSeleccionarPlantillas
     Left = 416
-    Top = 56
   end
 end

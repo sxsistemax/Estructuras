@@ -26,10 +26,12 @@ type
     eLote: TEdit;
     Label5: TLabel;
     eCantidad: TEdit;
+    SpeedButton2: TSpeedButton;
     procedure SpeedButton1Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure eComponenteExit(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -48,7 +50,7 @@ procedure AdicionarComponente(Plantilla, Descripcion, Componente, Lote: String; 
 
 implementation
 
-uses uSeleccionarInventario;
+uses uSeleccionarInventario, uSeleccionarLotes;
 
 {$R *.dfm}
 
@@ -110,6 +112,19 @@ begin
     eLote.Text := dmDatos.qrSeleccionarComponentesLote.Value;
     eCantidad.SetFocus;
   end;
+end;
+
+procedure TfrAdicionarComponente.SpeedButton2Click(Sender: TObject);
+begin
+  dmDatos.AbrirSeleccionLote( eComponente.Text);
+  if dmDatos.qrSeleccionarLotes.RecordCount > 0 then
+    eLote.Text :=  TfrSeleccionarLotes.Seleccionar(dmDatos.qrSeleccionarLotes, True, 'Lote')
+  else
+  begin
+    eLote.Text := '';
+    ShowMessage('Este componente no tienen lotes que seleccionar');
+  end;
+
 end;
 
 end.

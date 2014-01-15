@@ -76,14 +76,20 @@
 			<DCCReference Include="uRecalcular.pas">
 				<Form>frRecalcularCosto</Form>
 			</DCCReference>
-			<DCCReference Include="C:\Vcl\Comun\MantenimientoSPA.pas">
-				<Form>fmBaseMantenimiento</Form>
-			</DCCReference>
 			<DCCReference Include="uSeleccionarPedidos.pas">
 				<Form>frSeleccionarPedido</Form>
 			</DCCReference>
 			<DCCReference Include="uGenerarOrden.pas">
 				<Form>frGenerarOrden</Form>
+			</DCCReference>
+			<DCCReference Include="C:\Vcl\Comun\MantenimientoSPA.pas">
+				<Form>fmBaseMantenimiento</Form>
+			</DCCReference>
+			<DCCReference Include="uSeleccionarLotes.pas">
+				<Form>frSeleccionarLotes</Form>
+			</DCCReference>
+			<DCCReference Include="uProcesarCostosPlantillas.pas">
+				<Form>frProcesarCostoPlantilla</Form>
 			</DCCReference>
 			<None Include="SMenuTerceros.Cfg"/>
 			<BuildConfiguration Include="Base">
@@ -119,7 +125,7 @@
 						<VersionInfo Name="MajorVer">0</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
-						<VersionInfo Name="Build">10</VersionInfo>
+						<VersionInfo Name="Build">12</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -131,7 +137,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">SPA S.A.S.</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">0.1.0.10</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">0.1.0.12</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

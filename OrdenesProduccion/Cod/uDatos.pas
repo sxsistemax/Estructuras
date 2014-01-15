@@ -4,7 +4,8 @@ interface
 
 uses
   SysUtils, Classes, DB, dbisamtb, dialogs, variants, JvComponentBase,
-  JvProgressComponent, JvMemoryDataset;
+  JvProgressComponent, JvMemoryDataset, Graphics, JvBaseDlg, JvProgressDialog,
+  JvGIF;
 
 type
 
@@ -485,6 +486,10 @@ type
     tbPlantillasNetoVenta: TFloatField;
     tbPlantillasUtilidad: TFloatField;
     tbPlantillasRentabilidad: TFloatField;
+    qrSeleccionarLotes: TDBISAMQuery;
+    qrSeleccionarLotesLote: TStringField;
+    qrSeleccionarLotesRandom: TIntegerField;
+    pdProgreso1: TJvProgressDialog;
     procedure tbEnsamblesCostoGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
     procedure tbEnsamblesPrecioGetText(Sender: TField; var Text: string;
@@ -503,16 +508,20 @@ type
       var Text: string; DisplayText: Boolean);
     procedure qrComponentesExistenciaGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
+    procedure pdProgreso1Cancel(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    FProcesoCancelado : boolean;
     procedure AbrirSEnsambles;
-    procedure AbrirComponentes(Plantilla: string);
+    procedure AbrirComponentes(Plantilla: string; MostrarProgreso : boolean = True);
     procedure AbrirSFixed;
     procedure AbrirConfiguracion;
     procedure AbrirUsuarios;
     procedure AbrirInventario;
+    procedure AbrirtbEnsambles;
+    procedure AbrirSeleccionLote( Codigo : string);
     procedure AdicionarComponentes(Origen, Destino: string);
     procedure ActualizarComponente(Plantilla, Componente, Lote: string; 
       Cantidad: double; TipoProceso : tProcesoComponentes; TipoOperacion : integer);
@@ -533,6 +542,7 @@ type
     function CostoComponente(Codigo, Lote: string; ManejoInventario: integer;
       CostoActual: double): double;
     function ExistenciaComponente( Codigo, Lote: string): double;
+    procedure ProcesarCostoPlantilas( TipoProceso : Integer);
   end;
 
   
@@ -541,7 +551,7 @@ var
 
 implementation
 
-uses uBaseDatosA2, uTablasConBlobAdministrativo, uUtilidadesSPA;
+uses uBaseDatosA2, uTablasConBlobAdministrativo, uUtilidadesSPA, uRecalcular;
 {$R *.dfm}
 { TdmDatos }
 
@@ -568,16 +578,22 @@ begin
 end;
 end;
 
-procedure TdmDatos.AbrirComponentes(Plantilla: string);
+procedure TdmDatos.AbrirComponentes(Plantilla: string; MostrarProgreso : boolean = True);
 begin
-  pdProgreso.Execute;
-  pdProgreso.ProgressMax := 100;
-  pdProgreso.ProgressPosition := 0;
+  if MostrarProgreso then
+  begin
+    pdProgreso.Execute;
+    pdProgreso.ProgressMax := 100;
+    pdProgreso.ProgressPosition := 0;
+  end;
   qrComponentes.Close;
   qrComponentes.ParamByName('CodigoPlantilla').Value := Plantilla;
   qrComponentes.Open;
-  pdProgreso.ProgressPosition := 100;
-  pdProgreso.Hide;
+  if MostrarProgreso then
+  begin
+    pdProgreso.ProgressPosition := 100;
+    pdProgreso.Hide;
+  end;
 end;
 
 procedure TdmDatos.AbrirConfiguracion;
@@ -616,6 +632,17 @@ except
 end;
 end;
 
+procedure TdmDatos.AbrirSeleccionLote(Codigo: string);
+begin
+  try
+    qrSeleccionarLotes.Close;
+    qrSeleccionarLotes.ParamByName('Codigo').Value := Codigo;
+    qrSeleccionarLotes.Open;
+    
+  except on E: Exception do
+  end;
+end;
+
 procedure TdmDatos.AbrirSEnsambles;
 begin
 if not SEnsambles.Active then
@@ -631,6 +658,16 @@ begin
   dmAdministrativo.sFixed.Filter := 'FX_TIPO = ''B''';
   dmAdministrativo.sFixed.Filtered := true;
 
+end;
+
+procedure TdmDatos.AbrirtbEnsambles;
+begin
+  try
+    if not tbEnsambles.Active then
+      tbEnsambles.Open;
+      
+  except on E: Exception do
+  end;
 end;
 
 procedure TdmDatos.AbrirUsuarios;
@@ -744,7 +781,14 @@ begin
       tbPlantillasPrecio.Value := dmAdministrativo.tbPreciosSinImpuesto.Value;
       tbPlantillasValorIva.Value := dmAdministrativo.tbPreciosMtoImpuesto1.Value;
       tbPlantillasNetoVenta.Value := dmAdministrativo.tbPreciosPrecio.Value;
-      tbPlantillasUtilidad.Value := dmAdministrativo.tbPreciosUtilidad.Value;
+      if dmAdministrativo.tbPreciosPorcentajeUtilidad.Value then
+      begin
+        tbPlantillasRentabilidad.Value := dmAdministrativo.tbPreciosUtilidad.Value;
+        tbPlantillasUtilidad.Value := tbPlantillasPrecio.Value - tbPlantillasCosto.Value;
+      end
+      else
+        tbPlantillasUtilidad.Value := dmAdministrativo.tbPreciosUtilidad.Value;
+
       if dmAdministrativo.tbPreciosSinImpuesto.Value <> 0 then
         tbPlantillasRentabilidad.Value := tbPlantillasCosto.Value * 100 / tbPlantillasPrecio.Value
       else 
@@ -1160,8 +1204,7 @@ begin
 
       Campo := dmAdministrativo.sFixedFX_COSTOS;
 
-      dmAdministrativo.GuardarCostos(dmAdministrativo.sFixed,
-        dmAdministrativo.sFixedFX_COSTOS);
+      dmAdministrativo.GuardarCostos(dmAdministrativo.sFixed, dmAdministrativo.sFixedFX_COSTOS);
       dmAdministrativo.sFixedFX_COSTOS.Value := Campo.Value;
       dmAdministrativo.sFixed.Post;
 
@@ -1173,6 +1216,88 @@ begin
   except
     on E: Exception do
   end;
+end;
+
+procedure TdmDatos.pdProgreso1Cancel(Sender: TObject);
+begin
+  FProcesoCancelado := True;
+  ShowMessage('Proceso cancelado por el usuario.');
+end;
+
+procedure TdmDatos.ProcesarCostoPlantilas( TipoPRoceso : integer);
+var
+  Costo,
+  Precio,
+  ValorIVA,
+  NetoVenta,
+  Utilidad,
+  Rentabilidad : Double;
+begin
+  FProcesoCancelado := False;
+  pdProgreso1.Show;
+  pdProgreso1.Position := 0;
+  try
+    AbrirtbEnsambles;
+    pdProgreso1.Max := tbEnsambles.RecordCount;
+    tbEnsambles.First;
+    while not tbEnsambles.EOF and not FProcesoCancelado do
+    begin
+      FProcesoCancelado := pdProgreso1.Cancelled;
+      pdProgreso1.Text := tbEnsamblesFI_CODIGO.Value + ' ' + tbEnsamblesFI_DESCRIPCION.Value;
+      pdProgreso1.Position := tbEnsambles.RecNo;
+
+      // Busca los componentes
+      AbrirComponentes(tbEnsamblesFI_CODIGO.Value, False);
+
+      dmAdministrativo.CargarCostos(tbEnsamblesFI_CODIGO.Value);
+
+      // Carga el costo de la plantilla
+      CargarCostosPlantilla(tbEnsamblesFI_CODIGO.Value);
+
+      // Carga el costo sumando los componentes
+      Costo := CostoPlantilla(tpcConsulta);
+
+      // Hace el calculo y guarda;
+      Rentabilidad := tbPlantillasRentabilidad.Value;
+
+      Precio := tbPlantillasPrecio.Value;
+
+      if TipoProceso = 0 then
+      begin
+        // Calcula el precio
+        if (Rentabilidad / 100)  <> 1 then
+          Precio := Costo / ( 1 - (Rentabilidad / 100))
+        else
+          Precio := Costo;
+      end
+      else
+      begin
+        // Calcula el precio
+        if Costo <> 0 then
+          Rentabilidad := (Precio - Costo) / Costo * 100
+        else
+          Rentabilidad := 100;
+      end;
+
+
+      // Calcula el iva
+      ValorIva := tbPlantillasPrecio.Value * dmDatos.ValorIVA( tbEnsamblesFI_CODIGO.Value) / 100 ;
+
+      // Calcula el Neto
+      NetoVenta := Round( Precio + ValorIVA);
+
+      // Utilidad
+      Utilidad := Precio - Costo;
+
+      // Guardar los calculos
+      GuardarRecalculo(tbEnsamblesFI_CODIGO.Value, Costo, Precio, ValorIVA, NetoVenta, Rentabilidad);
+
+      tbEnsambles.next;
+    end;
+  except on E: Exception do
+    ShowMessage('Se produjo un error calculando los costos de las plantillas. ' + E.Message);
+  end;
+  pdProgreso1.Hide;
 end;
 
 procedure TdmDatos.qrComponentesCostoGetText(Sender: TField;
@@ -1203,8 +1328,9 @@ begin
         begin
           AbrirSEnsambles;
 
-          if SEnsambles.Locate('FEN_CODIGO;FEN_CODEPARTE;FEN_CODEPRESENTA',
-            VarArrayOf([Plantilla, Componente, Lote]), []) then
+          if (TipoOperacion = 0) and 
+           SEnsambles.Locate('FEN_CODIGO;FEN_CODEPARTE;FEN_CODEPRESENTA',
+            VarArrayOf([Plantilla, qrComponentesCodigo.Value, qrComponentesLote.Value]), []) then
             SEnsambles.Edit
           Else
             SEnsambles.Append;

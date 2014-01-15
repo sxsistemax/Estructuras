@@ -6,7 +6,9 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, MantenimientoSPA, DB, JvComponentBase, JvEnterTab, DBCtrls, ExtCtrls,
   StdCtrls, JvExStdCtrls, JvEdit, JvDBSearchEdit, Grids, DBGrids, ComCtrls,
-  Buttons, Mask, JvGroupBox, JvMemoryDataset, ActnList, Menus, uUtilidades;
+  Buttons, Mask, JvGroupBox, JvMemoryDataset, ActnList, Menus, uUtilidades,
+  JvBDEFilter, JvGridFilter, JvExMask, JvToolEdit, JvMaskEdit, JvDBFindEdit,
+  ImgList;
 
 type
   TfrPlantillas = class(TfmBaseMantenimiento)
@@ -84,7 +86,7 @@ uses uDatos, uDuplicarComponente, uBaseDatosA2, uTablasConBlobAdministrativo,
 procedure TfrPlantillas.AAdicionarComponenteExecute(Sender: TObject);
 begin
   inherited;
-  AdicionarComponente(eCodigo.Text, eDescripcion.Text, '', '', 0, tpcConsulta, 0);
+  AdicionarComponente(eCodigo.Text, eDescripcion.Text, '', '', 0, tpcConsulta, 1);
 end;
 
 procedure TfrPlantillas.aBorrarComponenteExecute(Sender: TObject);
@@ -115,7 +117,7 @@ procedure TfrPlantillas.aEditarExecute(Sender: TObject);
 begin
   inherited;
   AdicionarComponente(eCodigo.Text, eDescripcion.Text, dmDatos.qrComponentesCodigo.Value, dmDatos.qrComponentesLote.Value,
-        dmDatos.qrComponentesCantidad.Value, tpcConsulta, 1);
+        dmDatos.qrComponentesCantidad.Value, tpcConsulta, 0);
 end;
 
 procedure TfrPlantillas.aEliminarTodosComponentesExecute(Sender: TObject);
@@ -152,7 +154,7 @@ end;
 procedure TfrPlantillas.PageControl1Change(Sender: TObject);
 begin
   PonerFiltroComponentes;
-
+  dsComponentes.DataSet := dmDatos.qrComponentes;
   inherited;
 end;
 

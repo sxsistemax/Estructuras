@@ -13,9 +13,11 @@ uses
   uAdicionarComponente in 'uAdicionarComponente.pas' {frAdicionarComponente},
   uSeleccionarInventario in 'uSeleccionarInventario.pas' {frSeleccionarInventario},
   uRecalcular in 'uRecalcular.pas' {frRecalcularCosto},
-  MantenimientoSPA in 'C:\Vcl\Comun\MantenimientoSPA.pas' {fmBaseMantenimiento},
   uSeleccionarPedidos in 'uSeleccionarPedidos.pas' {frSeleccionarPedido},
-  uGenerarOrden in 'uGenerarOrden.pas' {frGenerarOrden};
+  uGenerarOrden in 'uGenerarOrden.pas' {frGenerarOrden},
+  MantenimientoSPA in 'C:\Vcl\Comun\MantenimientoSPA.pas' {fmBaseMantenimiento},
+  uSeleccionarLotes in 'uSeleccionarLotes.pas' {frSeleccionarLotes},
+  uProcesarCostosPlantillas in 'uProcesarCostosPlantillas.pas' {frProcesarCostoPlantilla};
 
 {$R *.res}
 
@@ -27,5 +29,6 @@ begin
   Application.CreateForm(TdmAdministrativo, dmAdministrativo);
   Application.CreateForm(TdmDatos, dmDatos);
   Application.CreateForm(TfrPrincipal, frPrincipal);
+  Application.CreateForm(TfrProcesarCostoPlantilla, frProcesarCostoPlantilla);
   Application.Run;
 end.

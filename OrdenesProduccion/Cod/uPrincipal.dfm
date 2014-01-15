@@ -23,7 +23,6 @@ object frPrincipal: TfrPrincipal
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitHeight = 408
     object Label1: TLabel
       Left = 16
       Top = 13
@@ -51,7 +50,6 @@ object frPrincipal: TfrPrincipal
     BevelOuter = bvNone
     Caption = '`'
     TabOrder = 1
-    ExplicitTop = 92
     object pAcciones: TActionToolBar
       AlignWithMargins = True
       Left = 3
@@ -80,7 +78,6 @@ object frPrincipal: TfrPrincipal
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitHeight = 56
       object btCancelar: TBitBtn
         Left = 82
         Top = 6
@@ -152,6 +149,11 @@ object frPrincipal: TfrPrincipal
           end
           item
             Action = aGenerarOrden
+            Caption = '&Generar Orden'
+          end
+          item
+            Action = aProcesarCostos
+            Caption = 'P&rocesar Costos'
           end>
         ActionBar = pAcciones
       end>
@@ -165,6 +167,10 @@ object frPrincipal: TfrPrincipal
     object aGenerarOrden: TAction
       Caption = 'Generar Orden'
       OnExecute = aGenerarOrdenExecute
+    end
+    object aProcesarCostos: TAction
+      Caption = 'Procesar Costos'
+      OnExecute = aProcesarCostosExecute
     end
   end
   object dsConfiguracion: TDataSource

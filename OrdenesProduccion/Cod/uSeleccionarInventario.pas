@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, MantenimientoSPA, DB, JvComponentBase, JvEnterTab, DBCtrls, ExtCtrls,
   StdCtrls, JvExStdCtrls, JvEdit, JvDBSearchEdit, Grids, DBGrids, ComCtrls,
-  Buttons, Mask;
+  Buttons, Mask, JvGridFilter, JvBDEFilter, JvExMask, JvToolEdit, JvMaskEdit,
+  JvDBFindEdit;
 
 type
   TfrSeleccionarInventario = class(TfmBaseMantenimiento)

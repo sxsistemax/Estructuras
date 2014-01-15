@@ -32,5 +32,9 @@
     <Transaction>2014/01/09 21:09:06.091.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarComponentes.dfm=</Transaction>
     <Transaction>2014/01/09 21:16:39.218.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.pas=C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarPedidos.pas</Transaction>
     <Transaction>2014/01/09 21:16:39.218.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarPedidos.dfm</Transaction>
+    <Transaction>2014/01/13 17:07:49.116.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.pas=C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarLotes.pas</Transaction>
+    <Transaction>2014/01/13 17:07:49.116.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarLotes.dfm</Transaction>
+    <Transaction>2014/01/13 18:36:27.061.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.pas=C:\Prj\Estructuras\OrdenesProduccion\Cod\uProcesarCostosPlantillas.pas</Transaction>
+    <Transaction>2014/01/13 18:36:27.061.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uProcesarCostosPlantillas.dfm</Transaction>
   </Transactions>
 </BorlandProject>
