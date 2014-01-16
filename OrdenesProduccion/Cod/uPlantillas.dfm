@@ -28,6 +28,7 @@ inherited frPlantillas: TfrPlantillas
   inherited PageControl1: TPageControl
     Width = 909
     Height = 483
+    ActivePage = tsRegistro
     ExplicitWidth = 909
     ExplicitHeight = 483
     inherited tsListado: TTabSheet

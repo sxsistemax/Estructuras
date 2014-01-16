@@ -22,7 +22,6 @@ object frGenerarOrden: TfrGenerarOrden
     Align = alTop
     BevelInner = bvLowered
     TabOrder = 0
-    ExplicitTop = -4
     object Label1: TLabel
       Left = 16
       Top = 16
@@ -144,7 +143,6 @@ object frGenerarOrden: TfrGenerarOrden
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 157
       object bAdicionar: TBitBtn
         Left = 296
         Top = 1
@@ -298,9 +296,6 @@ object frGenerarOrden: TfrGenerarOrden
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 1
-    ExplicitTop = 153
-    ExplicitWidth = 692
-    ExplicitHeight = 253
     object DBGrid1: TDBGrid
       Left = 2
       Top = 2
@@ -356,6 +351,7 @@ object frGenerarOrden: TfrGenerarOrden
   end
   object dsComponetes: TDataSource
     AutoEdit = False
+    DataSet = dmDatos.tbComponentes
     Left = 568
     Top = 24
   end
