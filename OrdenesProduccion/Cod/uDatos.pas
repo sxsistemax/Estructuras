@@ -5,7 +5,7 @@ interface
 uses
   SysUtils, Classes, DB, dbisamtb, dialogs, variants, JvComponentBase,
   JvProgressComponent, JvMemoryDataset, Graphics, JvBaseDlg, JvProgressDialog,
-  JvGIF;
+  JvGIF, uSeguridad;
 
 type
 
@@ -522,8 +522,11 @@ type
     procedure AbrirInventario;
     procedure AbrirtbEnsambles;
     procedure AbrirSeleccionLote( Codigo : string);
+    procedure AbrirDatosComponente( Codigo : string; Lote : string);
+    procedure AbrirDatosPlantilla( Plantilla : string);
+    procedure AbrirDatosPedido( Pedido, Codigo : string);
     procedure AdicionarComponentes(Origen, Destino: string);
-    procedure ActualizarComponente(Plantilla, Componente, Lote: string; 
+    procedure ActualizarComponente(Plantilla, Componente, Lote: string;
       Cantidad: double; TipoProceso : tProcesoComponentes; TipoOperacion : integer);
     Function DescripcionReferencia(Codigo: String): string;
     Procedure BorrarComponentes(Plantilla, Componente, Lote: string);
@@ -543,6 +546,7 @@ type
       CostoActual: double): double;
     function ExistenciaComponente( Codigo, Lote: string): double;
     procedure ProcesarCostoPlantilas( TipoProceso : Integer);
+
   end;
 
   
@@ -618,6 +622,64 @@ begin
   SPAOrdenesConfiguracion.Insert;
   SPAOrdenesConfiguracion.Post;
 end;
+end;
+
+procedure TdmDatos.AbrirDatosComponente(Codigo : string; Lote: string);
+begin
+  try
+    qrConsulta.Close;
+    qrConsulta.SQL.Text := 'SELECT Sinventario.FI_CODIGO Codigo, Sinventario.FI_DESCRIPCION Descripcion, Sinvlote.FL_LOTE Lote, ' +
+                           ' Sinvlote.FL_COSTO AS Costo, Sinvlote.FL_Random AS Random, Sinventario.FI_CLASIFICACION Clasificacion, Sinventario.FI_MANEJOINVENTARIO TipoInventario ' +
+                           ' FROM Sinventario LEFT OUTER JOIN Sinvlote ON (Sinventario.FI_CODIGO=Sinvlote.FL_CODIGO) ' +
+                           ' Where FI_CODIGO = ''' + Codigo + ''' and Sinvlote.FL_LOTE = ''' +  Lote + '''' ;
+    qrConsulta.Open;
+  except on E: Exception do
+  end;
+end;
+
+procedure TdmDatos.AbrirDatosPedido(Pedido, Codigo: string);
+begin
+  try
+    qrConsulta.Close;
+    qrConsulta.SQL.Text :=
+       'SELECT                                                                                                ' +
+       '  SOperacionInv.FTI_DOCUMENTO Documento,                                                              ' +
+       '  SDetalleVenta.FDI_CLIENTEPROVEEDOR IdCliente,                                                       ' +
+       '  SDetalleVenta.FDI_CODIGO Codigo,                                                                    ' +
+       '  SDetalleVenta.FDI_CANTIDAD AS Cantidad,                                                             ' +
+       '  SOperacionInv.FTI_VENDEDORASIGNADO IdVendedor,                                                      ' +
+       '  SOperacionInv.FTI_USER IdUsaurio,                                                                   ' +
+       '  SOperacionInv.FTI_FECHAEMISION FechaEmision,                                                        ' +
+       '  SOperacionInv.FTI_FECHAVENCIDO FechaVencimiento,                                                    ' +
+       '  Sinventario.FI_DESCRIPCION Cliente, Sclientes.FC_DESCRIPCION Descripcion, Svendedores.FV_DESCRIPCION Vendedor ' +
+       'FROM                                                                                                  ' +
+       ' SOperacionInv                                                                                        ' +
+       ' INNER JOIN SDetalleVenta ON (SOperacionInv.FTI_DOCUMENTO=SDetalleVenta.FDI_DOCUMENTO)                ' +
+       '  AND (SOperacionInv.FTI_TIPO=SDetalleVenta.FDI_TIPOOPERACION)                                        ' +
+       ' LEFT OUTER JOIN SEnsamblesOrden ON (SDetalleVenta.FDI_DOCUMENTO=SEnsamblesOrden.FEO_NOORDENCOMPRA)   ' +
+       '    AND (SDetalleVenta.FDI_CODIGO=SEnsamblesOrden.FEO_CODEPRODUCTO)                                   ' +
+       '  INNER JOIN Sinventario ON (Sinventario.FI_CODIGO=SDetalleVenta.FDI_CODIGO)                          ' +
+       '  INNER JOIN Sclientes ON (SDetalleVenta.FDI_CLIENTEPROVEEDOR=Sclientes.FC_CODIGO)                    ' +
+       '  INNER JOIN Svendedores ON (SOperacionInv.FTI_VENDEDORASIGNADO=Svendedores.FV_CODIGO)                ' +
+       'WHERE                                                                                                 ' +
+       '  (SOperacionInv.FTI_TIPO = 10) AND                                                                   ' +
+       '  (SOperacionInv.FTI_DOCUMENTO = ''' + Pedido + ''') AND                                              ' +
+       '  (SDetalleVenta.FDI_CODIGO = ''' + Codigo + ''')                                                     ' ;
+
+    qrConsulta.Open;
+  except on E: Exception do
+  end;
+end;
+
+procedure TdmDatos.AbrirDatosPlantilla(Plantilla: string);
+begin
+  try
+    qrConsulta.Close;
+    qrConsulta.SQL.Text := 'SELECT Sinventario.FI_CODIGO Codigo, Sinventario.FI_DESCRIPCION Descripcion FROM Sinventario ' +
+        ' WHERE FI_CODIGO = ''' + Plantilla + '''';
+    qrConsulta.Open;
+  except on E: Exception do
+  end;
 end;
 
 procedure TdmDatos.AbrirInventario;
@@ -1033,20 +1095,15 @@ begin
     begin
       // Inserta el detalle de la orden 
       SEnsamblesDetalle.Append;
-      SEnsamblesDetalleFED_DOCUMENTO.Value :=
-        SEnsamblesOrdenFEO_DOCUMENTO.Value;
+      SEnsamblesDetalleFED_DOCUMENTO.Value := SEnsamblesOrdenFEO_DOCUMENTO.Value;
       SEnsamblesDetalleFED_PRODUCTO.Value := tbComponentesCodigo.Value;
       SEnsamblesDetalleFED_CODEPRINCIPAL.Value := Plantilla;
-      SEnsamblesDetalleFED_FECHAEMISION.Value :=
-        SEnsamblesOrdenFEO_FECHAEMISION.Value;
+      SEnsamblesDetalleFED_FECHAEMISION.Value := SEnsamblesOrdenFEO_FECHAEMISION.Value;
       SEnsamblesDetalleFED_STATUS.Value := 4;
-      SEnsamblesDetalleFED_CANTIDAD.Value :=
-        tbComponentesCantidad.Value;
+      SEnsamblesDetalleFED_CANTIDAD.Value := tbComponentesCantidad.Value * Cantidad;
       SEnsamblesDetalleFED_CANTIDADDESCARGA.Value := 1;
-      SEnsamblesDetalleFED_COSTOUNITARIO.Value :=
-        tbComponentesCosto.Value;
-      SEnsamblesDetalleFED_CODEPRESENTA.Value :=
-        tbComponentesLote.Value;
+      SEnsamblesDetalleFED_COSTOUNITARIO.Value := tbComponentesCosto.Value;
+      SEnsamblesDetalleFED_CODEPRESENTA.Value := tbComponentesLote.Value;
       SEnsamblesDetalleFED_ORIGENAUTO.Value := 0;
       SEnsamblesDetalleFED_FACTORPRESENTA.Value := 1;
       SEnsamblesDetalleFED_CANTIDADCIERRE.Value := 0;
@@ -1060,27 +1117,22 @@ begin
       // ACtualia el inventario si lo mueve
       if tbComponentesClasificacion.Value <> integer(tciServicios) then
       begin
-        // Inserta el traslado 
+        // Inserta el traslado
         SDetalleInv.Append;
         SDetalleInvFDI_TIPOOPERACION.Value := integer(toiTraslados);
         SDetalleInvFDI_CODIGO.Value := tbComponentesCodigo.Value;
         SDetalleInvFDI_LINEA.Value := tbComponentes.RecNo - 1;
-        SDetalleInvFDI_DOCUMENTO.Value :=
-          SOperacionInvFTI_DOCUMENTO.Value;
-        SDetalleInvFDI_DOCUMENTOORIGEN.Value :=
-          SOperacionInvFTI_DOCUMENTOORIGEN.Value;
-        SDetalleInvFDI_CLASIFICACION.Value :=
-          SOperacionInvFTI_CLASIFICACION.Value;
+        SDetalleInvFDI_DOCUMENTO.Value := SOperacionInvFTI_DOCUMENTO.Value;
+        SDetalleInvFDI_DOCUMENTOORIGEN.Value := SOperacionInvFTI_DOCUMENTOORIGEN.Value;
+        SDetalleInvFDI_CLASIFICACION.Value := SOperacionInvFTI_CLASIFICACION.Value;
         SDetalleInvFDI_STATUS.Value := 1;
         SDetalleInvFDI_VISIBLE.Value := true;
         SDetalleInvFDI_COSTO.Value := tbComponentesCosto.Value;
-        SDetalleInvFDI_CANTIDAD.Value := tbComponentesCantidad.Value;
+        SDetalleInvFDI_CANTIDAD.Value := tbComponentesCantidad.Value * Cantidad;
         SDetalleInvFDI_LOTE.Value := tbComponentesLote.Value;
         SDetalleInvFDI_LOTERANDOM.Value := tbComponentesRandom.Value;
-        SDetalleInvFDI_DEPOSITOSOURCE.Value :=
-          SOperacionInvFTI_DEPOSITOSOURCE.Value;
-        SDetalleInvFDI_DEPOSITOTARGET.Value :=
-          SOperacionInvFTI_DEPOSITODESTINO.Value;
+        SDetalleInvFDI_DEPOSITOSOURCE.Value := SOperacionInvFTI_DEPOSITOSOURCE.Value;
+        SDetalleInvFDI_DEPOSITOTARGET.Value := SOperacionInvFTI_DEPOSITODESTINO.Value;
         SDetalleInvFDI_DECIMALES.Value := true;
         SDetalleInvFDI_DECIMALESPEN.Value := true;
         SDetalleInvFDI_SERIALNUMBER.Value := Random(1000000000);
@@ -1113,16 +1165,14 @@ begin
 
         SinvDepFT_TIPO.Value := 4;
         SinvDepFT_CODIGOPRODUCTO.Value := tbComponentesCodigo.Value;
-        SinvDepFT_CODIGODEPOSITO.Value :=
-          SOperacionInvFTI_DEPOSITOSOURCE.Value;
+        SinvDepFT_CODIGODEPOSITO.Value := SOperacionInvFTI_DEPOSITOSOURCE.Value;
         SinvDepFT_LOTE.Value := tbComponentesLote.Value;
         SinvDepFT_LOTEAUTOINCREMENT.Value := tbComponentesRandom.Value;
-        SinvDepFT_EXISTENCIA.Value := SinvDepFT_EXISTENCIA.Value -
-          tbComponentesCantidad.Value;
+        SinvDepFT_EXISTENCIA.Value := SinvDepFT_EXISTENCIA.Value - tbComponentesCantidad.Value * Cantidad;
         SinvDepFT_VISIBLE.Value := true;
         SinvDep.Post;
 
-        // Busca en SInvDep el registro, si no existe lo inserta (Destino) 
+        // Busca en SInvDep el registro, si no existe lo inserta (Destino)
         if not SinvDep.Locate(
           'FT_TIPO;FT_CODIGOPRODUCTO;FT_CODIGODEPOSITO;FT_LOTE;FT_LOTEAUTOINCREMENT'
             , VarArrayOf([4, tbComponentesCodigo.Value,
@@ -1138,16 +1188,13 @@ begin
 
         SinvDepFT_TIPO.Value := 4;
         SinvDepFT_CODIGOPRODUCTO.Value := tbComponentesCodigo.Value;
-        SinvDepFT_CODIGODEPOSITO.Value :=
-          SOperacionInvFTI_DEPOSITODESTINO
-          .Value;
+        SinvDepFT_CODIGODEPOSITO.Value := SOperacionInvFTI_DEPOSITODESTINO.Value;
         SinvDepFT_LOTE.Value := tbComponentesLote.Value;
         SinvDepFT_LOTEAUTOINCREMENT.Value := tbComponentesRandom.Value;
-        SinvDepFT_EXISTENCIA.Value := SinvDepFT_EXISTENCIA.Value +
-          tbComponentesCantidad.Value;
+        SinvDepFT_EXISTENCIA.Value := SinvDepFT_EXISTENCIA.Value + tbComponentesCantidad.Value * Cantidad;
         SinvDepFT_VISIBLE.Value := true;
         SinvDep.Post;
-        
+
       end;
               
       tbComponentes.Next;
@@ -1323,12 +1370,13 @@ procedure TdmDatos.ActualizarComponente(Plantilla, Componente,
   Lote: string; Cantidad: double; TipoProceso : tProcesoComponentes; TipoOperacion : integer);
 begin
   try
+    AbrirDatosComponente( Componente, Lote);
     case TipoProceso of
-      tpcConsulta: 
+      tpcConsulta:
         begin
           AbrirSEnsambles;
 
-          if (TipoOperacion = 0) and 
+          if (TipoOperacion = 0) and
            SEnsambles.Locate('FEN_CODIGO;FEN_CODEPARTE;FEN_CODEPRESENTA',
             VarArrayOf([Plantilla, qrComponentesCodigo.Value, qrComponentesLote.Value]), []) then
             SEnsambles.Edit
@@ -1346,19 +1394,22 @@ begin
       tpcTemporal: 
         begin
           if TipoOperacion = 0 then
-            tbComponentes.Edit
+          begin
+            tbComponentes.Edit;
+
+          end
           Else
             tbComponentes.Append;
 
           tbComponentesCodigo.Value := Componente;
-          tbComponentesDescripcion.Value := qrSeleccionarComponentesDescripcion.Value;
+          tbComponentesDescripcion.Value := qrConsulta.FieldByName('Descripcion').Value;
           tbComponentesCantidad.Value := Cantidad;
           tbComponentesLote.Value := Lote;
-          tbComponentesClasificacion.Value := qrSeleccionarComponentesClasificacion.Value;
-          tbComponentesTipoInventario.Value := qrSeleccionarComponentesTipoInventario.Value;
-          tbComponentesCosto.Value :=  CostoComponente( tbComponentesCodigo.Value, tbComponentesLote.Value, 
-                                            tbComponentesTipoInventario.Value, qrSeleccionarComponentesCosto.Value);
-          tbComponentesRandom.Value := qrSeleccionarComponentesRandom.Value;
+          tbComponentesClasificacion.Value := qrConsulta.FieldByName('Clasificacion').Value;
+          tbComponentesTipoInventario.Value := qrConsulta.FieldByName('TipoInventario').Value;
+          tbComponentesCosto.Value :=  CostoComponente( tbComponentesCodigo.Value, tbComponentesLote.Value,
+                                            tbComponentesTipoInventario.Value, qrConsulta.FieldByName('Costo').AsInteger);
+          tbComponentesRandom.Value := qrConsulta.FieldByName('Random').AsInteger;
           tbComponentesExistencia.Value := ExistenciaComponente(tbComponentesCodigo.Value, tbComponentesLote.Value);
           tbComponentes.Post;
         end;

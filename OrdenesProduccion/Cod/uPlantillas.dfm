@@ -95,9 +95,11 @@ inherited frPlantillas: TfrPlantillas
       end
       inherited pBuscar: TPanel
         Width = 901
+        ExplicitWidth = 901
       end
       inherited pFiltro: TPanel
         Width = 901
+        ExplicitWidth = 901
       end
       inherited pCampos: TPanel
         inherited cbCampoBusqueda: TComboBox
@@ -108,6 +110,8 @@ inherited frPlantillas: TfrPlantillas
       end
     end
     inherited tsRegistro: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 27
       ExplicitWidth = 901
       ExplicitHeight = 452
       inherited Bevel1: TBevel
@@ -570,7 +574,6 @@ inherited frPlantillas: TfrPlantillas
     ExplicitWidth = 184
   end
   inherited dsDataSource: TDataSource
-    DataSet = dmDatos.tbEnsambles
     Left = 344
     Top = 48
   end
@@ -645,7 +648,6 @@ inherited frPlantillas: TfrPlantillas
   end
   object dsComponentes: TDataSource
     AutoEdit = False
-    DataSet = dmDatos.qrComponentes
     Left = 408
     Top = 48
   end

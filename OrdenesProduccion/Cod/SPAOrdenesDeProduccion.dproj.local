@@ -36,5 +36,7 @@
     <Transaction>2014/01/13 17:07:49.116.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uSeleccionarLotes.dfm</Transaction>
     <Transaction>2014/01/13 18:36:27.061.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.pas=C:\Prj\Estructuras\OrdenesProduccion\Cod\uProcesarCostosPlantillas.pas</Transaction>
     <Transaction>2014/01/13 18:36:27.061.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.dfm=C:\Prj\Estructuras\OrdenesProduccion\Cod\uProcesarCostosPlantillas.dfm</Transaction>
+    <Transaction>2014/01/17 16:17:15.335.pas,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.pas=C:\Prj\CompartidosA2\uSeguridad.pas</Transaction>
+    <Transaction>2014/01/17 16:17:15.335.dfm,C:\Prj\Estructuras\OrdenesProduccion\Cod\Unit1.dfm=C:\Prj\CompartidosA2\uSeguridad.dfm</Transaction>
   </Transactions>
 </BorlandProject>

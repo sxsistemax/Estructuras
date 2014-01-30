@@ -10,6 +10,7 @@ uses
 
 type
   TfrSeleccionarPedido = class(TfmBaseMantenimiento)
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -24,5 +25,13 @@ implementation
 uses uDatos;
 
 {$R *.dfm}
+
+procedure TfrSeleccionarPedido.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmDatos.AbrirDatosPedido(dsDataSource.DataSet.FieldByName('Documento').Value,
+       dsDataSource.DataSet.FieldByName('Codigo').Value);
+  inherited;
+end;
 
 end.

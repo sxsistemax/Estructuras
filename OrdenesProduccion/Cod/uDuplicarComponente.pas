@@ -62,7 +62,7 @@ begin
   eCodigoDestino.Text :=  TfrSeleccionarInventario.Seleccionar(dmDatos.qrSeleccionarPlantillas, True, 'CODIGO');
   if eCodigoDestino.Text <> '' then
   begin
-    eDescripcionDestino.Text := dmDAtos.qrSeleccionarPlantillasDESCRIPCION.Value;
+    eDescripcionDestino.Text := dmDAtos.qrConsulta.FieldByName('Descripcion').Value;
   end;
 end;
 

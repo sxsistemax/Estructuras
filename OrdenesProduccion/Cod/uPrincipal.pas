@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ActnList, PlatformDefaultStyleActnCtrls, ActnMan, ToolWin, ActnCtrls,
-  ExtCtrls, Grids, DBGrids, DBCtrls, StdCtrls, DB, Buttons;
+  ExtCtrls, Grids, DBGrids, DBCtrls, StdCtrls, DB, Buttons, uSeguridad;
 
 type
   TfrPrincipal = class(TForm)
@@ -23,17 +23,21 @@ type
     DBLookupComboBox1: TDBLookupComboBox;
     aGenerarOrden: TAction;
     aProcesarCostos: TAction;
+    bRegistro: TBitBtn;
     procedure aPlantillasExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btGuardarClick(Sender: TObject);
     procedure btCancelarClick(Sender: TObject);
     procedure aGenerarOrdenExecute(Sender: TObject);
     procedure aProcesarCostosExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure bRegistroClick(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     procedure CargarPlantillas;
+    procedure CargarDatosAplicaion;
   end;
 
 var
@@ -42,9 +46,21 @@ var
 implementation
 
 uses uUtilidadesSPA, uBaseDatosA2, uPlantillas, uDatos,
-  uTablasConBlobAdministrativo, uGenerarOrden, uProcesarCostosPlantillas;
+  uTablasConBlobAdministrativo, uGenerarOrden, uProcesarCostosPlantillas, OnGuard;
+
+Const
+  IdentificadorAplicacion : TKey = ($53,$71,$23,$01,$CE,$CE,$85,$96,$58,$36,$E6,$2E,$87,$C6,$77,$98);
 
 {$R *.dfm}
+
+procedure TfrPrincipal.CargarDatosAplicaion;
+begin
+  // Se debe sobre escribir para llenar los datos necesaros de la aplicación
+
+  // Ejemplo el identificador para validar el registro.
+  Key := IdentificadorAplicacion;
+end;
+
 
 procedure TfrPrincipal.aGenerarOrdenExecute(Sender: TObject);
 begin
@@ -59,6 +75,11 @@ end;
 procedure TfrPrincipal.aProcesarCostosExecute(Sender: TObject);
 begin
   RecalcularCostosPlantillas;
+end;
+
+procedure TfrPrincipal.bRegistroClick(Sender: TObject);
+begin
+  MostrarRegistrado;
 end;
 
 procedure TfrPrincipal.btCancelarClick(Sender: TObject);
@@ -78,8 +99,19 @@ begin
   TfrPlantillas.prMantenimiento( dmDatos.tbEnsambles, 'FI_CODIGO');
 end;
 
+procedure TfrPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dmBasesDatos.dbA2.CloseDataSets;
+end;
+
 procedure TfrPrincipal.FormCreate(Sender: TObject);
 begin
+  CargarDatosAplicaion;
+
+  ModoDemo := False;
+
+  ValidarRegistro(ModoDemo);
+
   OpcionParametro;
 
   // Hace la verificación de sEmpresa.Dat
@@ -95,6 +127,8 @@ begin
     dmDatos.AbrirSFixed;
     dmDatos.AbrirUsuarios;
     dmDatos.AbrirConfiguracion;
+
+    dsConfiguracion.DataSet := dmDatos.SPAOrdenesConfiguracion;
  End
   Else
   begin

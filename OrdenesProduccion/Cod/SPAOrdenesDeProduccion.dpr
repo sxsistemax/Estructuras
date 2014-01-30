@@ -17,7 +17,8 @@ uses
   uGenerarOrden in 'uGenerarOrden.pas' {frGenerarOrden},
   MantenimientoSPA in 'C:\Vcl\Comun\MantenimientoSPA.pas' {fmBaseMantenimiento},
   uSeleccionarLotes in 'uSeleccionarLotes.pas' {frSeleccionarLotes},
-  uProcesarCostosPlantillas in 'uProcesarCostosPlantillas.pas' {frProcesarCostoPlantilla};
+  uProcesarCostosPlantillas in 'uProcesarCostosPlantillas.pas' {frProcesarCostoPlantilla},
+  uSeguridad in '..\..\..\CompartidosA2\uSeguridad.pas' {frSeguridad};
 
 {$R *.res}
 
@@ -29,6 +30,5 @@ begin
   Application.CreateForm(TdmAdministrativo, dmAdministrativo);
   Application.CreateForm(TdmDatos, dmDatos);
   Application.CreateForm(TfrPrincipal, frPrincipal);
-  Application.CreateForm(TfrProcesarCostoPlantilla, frProcesarCostoPlantilla);
   Application.Run;
 end.

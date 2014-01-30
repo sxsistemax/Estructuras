@@ -48,6 +48,7 @@ type
     procedure aEditarExecute(Sender: TObject);
     procedure aBorrarComponenteExecute(Sender: TObject);
     procedure aConsultarCostoExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -116,17 +117,22 @@ begin
   ePedido.SetFocus;
 end;
 
+procedure TfrGenerarOrden.FormCreate(Sender: TObject);
+begin
+  dsComponetes.DataSet := dmDatos.tbComponentes;
+end;
+
 procedure TfrGenerarOrden.SpeedButton1Click(Sender: TObject);
 begin
   dmDatos.AbrirArchivosParaOrdenes;
   ePedido.Text := TfrSeleccionarPedido.Seleccionar(dmDatos.qrPedidosPendientes, true, 'Documento');
   if ePedido.Text <> '' then
   begin
-    ePlantilla.Text := dmDatos.qrPedidosPendientesCodigo.Value;
-    lCliente.Caption := dmDatos.qrPedidosPendientesCliente.Value;
-    lDescripcion.Caption := dmDatos.qrPedidosPendientesDescripcion.Value;
-    eCantidad.Text := dmDatos.qrPedidosPendientesCantidad.AsString;
-    lVendedor.Caption := dmDatos.qrPedidosPendientesVendedor.AsString;
+    ePlantilla.Text := dmDatos.qrConsulta.FieldByName('Codigo').Value;
+    lCliente.Caption := dmDatos.qrConsulta.FieldByName('Cliente').Value;
+    lDescripcion.Caption := dmDatos.qrConsulta.FieldByName('Descripcion').Value;
+    eCantidad.Text := dmDatos.qrConsulta.FieldByName('Cantidad').AsString;
+    lVendedor.Caption := dmDatos.qrConsulta.FieldByName('Vendedor').AsString;
     dmDatos.CargarTablaComponentes(ePlantilla.Text);
   end;
 end;

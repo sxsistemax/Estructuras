@@ -15,6 +15,7 @@ type
     DBEdit1: TDBEdit;
     Label2: TLabel;
     DBEdit2: TDBEdit;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -29,5 +30,17 @@ implementation
 uses uTablasConBlobAdministrativo, uDatos;
 
 {$R *.dfm}
+
+procedure TfrSeleccionarInventario.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  if dsDataSource.DataSet = dmDatos.qrSeleccionarComponentes then
+    dmDatos.AbrirDatosComponente( dsDataSource.DataSet.FieldByName('Codigo').Value,
+       varToStr( dsDataSource.DataSet.FieldByName('Lote').Value))
+  else
+    if dsDataSource.DataSet = dmDatos.qrSeleccionarComponentes then
+      dmDatos.AbrirDatosPlantilla(dsDataSource.DataSet.FieldByName('Codigo').Value);
+  inherited;
+end;
 
 end.

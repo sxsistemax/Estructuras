@@ -66,6 +66,7 @@ type
     procedure aEliminarTodosComponentesExecute(Sender: TObject);
     procedure aBorrarComponenteExecute(Sender: TObject);
     procedure aRecalcularExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -151,10 +152,15 @@ begin
   inherited;
 end;
 
+procedure TfrPlantillas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dsComponentes.DataSet := dmDatos.qrComponentes;
+end;
+
 procedure TfrPlantillas.PageControl1Change(Sender: TObject);
 begin
   PonerFiltroComponentes;
-  dsComponentes.DataSet := dmDatos.qrComponentes;
   inherited;
 end;
 

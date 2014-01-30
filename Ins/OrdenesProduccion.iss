@@ -18,8 +18,8 @@ AppPublisher={#MyAppPublisher}
 DefaultDirName=c:\a2Softway
 DefaultGroupName=SPA
 DisableProgramGroupPage=yes
-OutputDir=C:\Prj\Estructuras\Instalador
-OutputBaseFilename=setup
+OutputDir=c:\Prj\Instaladores\Ordenes\Ins
+OutputBaseFilename=OrdenesProduccionV1
 Compression=lzma
 SolidCompression=yes
 
@@ -27,9 +27,9 @@ SolidCompression=yes
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Files]
-Source: "C:\Prj\Estructuras\OrdenesProduccion\Exe\SPAOrdenesDeProduccion.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Prj\Estructuras\OrdenesProduccion\Exe\SMenuTerceros.Cfg"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Prj\Estructuras\Migrador\Exe\SPAMigrarEstructuras.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "c:\Prj\Instaladores\Ordenes\Src\SPAOrdenesDeProduccion.exe"; DestDir: "{app}";
+Source: "c:\Prj\Instaladores\Ordenes\Src\SMenuTerceros.Cfg"; DestDir: "{app}";
+Source: "c:\Prj\Instaladores\Ordenes\Src\SPAMigrarEstructuras.exe"; DestDir: "{app}"; 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

@@ -104,12 +104,14 @@ begin
 end;
 
 procedure TfrAdicionarComponente.SpeedButton1Click(Sender: TObject);
+var
+  Descripcion, Lote : string;
 begin
   eComponente.Text :=  TfrSeleccionarInventario.Seleccionar(dmDatos.qrSeleccionarComponentes, True, 'CODIGO');
   if eComponente.Text <> '' then
   begin
-    eDescripcionComponente.Text := dmDAtos.qrSeleccionarComponentesDescripcion.Value;
-    eLote.Text := dmDatos.qrSeleccionarComponentesLote.Value;
+    eDescripcionComponente.Text := dmDatos.qrConsulta.FieldByName('Descripcion').Value;
+    eLote.Text := varToStr( dmDatos.qrConsulta.FieldByName('Lote').Value);
     eCantidad.SetFocus;
   end;
 end;

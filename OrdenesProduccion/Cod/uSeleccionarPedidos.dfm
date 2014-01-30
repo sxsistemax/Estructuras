@@ -94,9 +94,11 @@ inherited frSeleccionarPedido: TfrSeleccionarPedido
       end
       inherited pBuscar: TPanel
         Width = 801
+        ExplicitWidth = 801
       end
       inherited pFiltro: TPanel
         Width = 801
+        ExplicitWidth = 801
       end
     end
     inherited tsRegistro: TTabSheet

@@ -2,7 +2,6 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
   Caption = 'Seleccionar Inventario'
   ClientHeight = 492
   ClientWidth = 934
-  ExplicitLeft = -161
   ExplicitWidth = 950
   ExplicitHeight = 531
   PixelsPerInch = 96
@@ -23,6 +22,8 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
     ExplicitWidth = 934
     ExplicitHeight = 460
     inherited tsListado: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 926
       ExplicitHeight = 429
       inherited dgGrid: TDBGrid
@@ -32,7 +33,6 @@ inherited frSeleccionarInventario: TfrSeleccionarInventario
       inherited pBuscar: TPanel
         Width = 926
         ExplicitWidth = 926
-        ExplicitHeight = 34
       end
       inherited pFiltro: TPanel
         Width = 926
