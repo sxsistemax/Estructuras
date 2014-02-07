@@ -651,7 +651,7 @@ begin
        '  SOperacionInv.FTI_USER IdUsaurio,                                                                   ' +
        '  SOperacionInv.FTI_FECHAEMISION FechaEmision,                                                        ' +
        '  SOperacionInv.FTI_FECHAVENCIDO FechaVencimiento,                                                    ' +
-       '  Sinventario.FI_DESCRIPCION Cliente, Sclientes.FC_DESCRIPCION Descripcion, Svendedores.FV_DESCRIPCION Vendedor ' +
+       '  Sinventario.FI_DESCRIPCION Descripcion, Sclientes.FC_DESCRIPCION Cliente, Svendedores.FV_DESCRIPCION Vendedor ' +
        'FROM                                                                                                  ' +
        ' SOperacionInv                                                                                        ' +
        ' INNER JOIN SDetalleVenta ON (SOperacionInv.FTI_DOCUMENTO=SDetalleVenta.FDI_DOCUMENTO)                ' +
@@ -807,7 +807,7 @@ try
   qrConsulta.Close;
   qrConsulta.SQL.Text :=
     'Delete from SEnsambles Where FEN_CODEPARTE <> ''$$$$$$$$$$'' and FEN_CODIGO = ''' + Plantilla + ''' ';
-  if (Componente <> '') and (Lote <> '') then
+  if (Componente <> '') or (Lote <> '') then
     qrConsulta.SQL.Text := qrConsulta.SQL.Text +
       ' and FEN_CODEPARTE = ''' + Componente +
       ''' and FEN_CODEPRESENTA = ''' + Lote + '''';
