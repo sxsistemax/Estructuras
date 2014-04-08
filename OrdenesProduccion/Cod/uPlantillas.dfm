@@ -32,6 +32,8 @@ inherited frPlantillas: TfrPlantillas
     ExplicitWidth = 909
     ExplicitHeight = 483
     inherited tsListado: TTabSheet
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 901
       ExplicitHeight = 452
       inherited dgGrid: TDBGrid

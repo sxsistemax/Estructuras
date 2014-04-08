@@ -490,6 +490,11 @@ type
     qrSeleccionarLotesLote: TStringField;
     qrSeleccionarLotesRandom: TIntegerField;
     pdProgreso1: TJvProgressDialog;
+    SpaApartadosOrdenes: TDBISAMTable;
+    SpaApartadosOrdenesApartado: TStringField;
+    SpaApartadosOrdenesOrden: TStringField;
+    qrApartadosNuevos: TDBISAMQuery;
+    qrApartadosNuevosFTI_DOCUMENTO: TStringField;
     procedure tbEnsamblesCostoGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
     procedure tbEnsamblesPrecioGetText(Sender: TField; var Text: string;
@@ -521,6 +526,7 @@ type
     procedure AbrirUsuarios;
     procedure AbrirInventario;
     procedure AbrirtbEnsambles;
+    procedure AbrirApartadosOrdenes;
     procedure AbrirSeleccionLote( Codigo : string);
     procedure AbrirDatosComponente( Codigo : string; Lote : string);
     procedure AbrirDatosPlantilla( Plantilla : string);
@@ -540,16 +546,18 @@ type
     Procedure CargarCostosPlantilla(Codigo: string);
     Procedure GenerarOrden(Pedido, Plantilla, Responsable: string;
       FechaEntrega: TDateTime; Cantidad: double);
+    Procedure GenerarOrdenDesdeApartado(Apartado, Plantilla, Responsable: string;
+      FechaEntrega: TDateTime; Cantidad: double);
     function Usuario: String;
     function Clasificacion(Codigo: integer): string;
     function CostoComponente(Codigo, Lote: string; ManejoInventario: integer;
       CostoActual: double): double;
     function ExistenciaComponente( Codigo, Lote: string): double;
     procedure ProcesarCostoPlantilas( TipoProceso : Integer);
-
+    procedure BuscarApatados;
   end;
 
-  
+
 var
   dmDatos: TdmDatos;
 
@@ -558,6 +566,25 @@ implementation
 uses uBaseDatosA2, uTablasConBlobAdministrativo, uUtilidadesSPA, uRecalcular;
 {$R *.dfm}
 { TdmDatos }
+
+procedure TdmDatos.AbrirApartadosOrdenes;
+var
+  S: string;
+begin
+  S := IncludeTrailingPathDelimiter(dmBasesDatos.dbA2.Directory);
+
+  S := S + SpaApartadosOrdenes.TableName + '.dat';
+
+  // Si no existe el erachivo debe crearlo
+  if Not FileExists(S) then
+  begin
+    SpaApartadosOrdenes.CreateTable();
+  end;
+
+  if not SpaApartadosOrdenes.Active then
+    SpaApartadosOrdenes.Open;
+
+end;
 
 procedure TdmDatos.AbrirArchivosParaOrdenes;
 begin
@@ -579,7 +606,7 @@ begin
 
   except
     on E: Exception do
-end;
+  end;
 end;
 
 procedure TdmDatos.AbrirComponentes(Plantilla: string; MostrarProgreso : boolean = True);
@@ -602,26 +629,26 @@ end;
 
 procedure TdmDatos.AbrirConfiguracion;
 var
-S: string;
+  S: string;
 begin
-S := IncludeTrailingPathDelimiter(dmBasesDatos.dbA2.Directory);
+  S := IncludeTrailingPathDelimiter(dmBasesDatos.dbA2.Directory);
 
-S := S + SPAOrdenesConfiguracion.TableName + '.dat';
+  S := S + SPAOrdenesConfiguracion.TableName + '.dat';
 
-// Si no existe el erachivo debe crearlo 
-if Not FileExists(S) then
-begin
-  SPAOrdenesConfiguracion.CreateTable();
-end;
+  // Si no existe el erachivo debe crearlo
+  if Not FileExists(S) then
+  begin
+    SPAOrdenesConfiguracion.CreateTable();
+  end;
 
-if not SPAOrdenesConfiguracion.Active then
-  SPAOrdenesConfiguracion.Open;
+  if not SPAOrdenesConfiguracion.Active then
+    SPAOrdenesConfiguracion.Open;
 
-if SPAOrdenesConfiguracion.RecordCount = 0 then
-begin
-  SPAOrdenesConfiguracion.Insert;
-  SPAOrdenesConfiguracion.Post;
-end;
+  if SPAOrdenesConfiguracion.RecordCount = 0 then
+  begin
+    SPAOrdenesConfiguracion.Insert;
+    SPAOrdenesConfiguracion.Post;
+  end;
 end;
 
 procedure TdmDatos.AbrirDatosComponente(Codigo : string; Lote: string);
@@ -803,21 +830,31 @@ end;
 
 procedure TdmDatos.BorrarComponentes(Plantilla, Componente, Lote: string);
 begin
-try
-  qrConsulta.Close;
-  qrConsulta.SQL.Text :=
-    'Delete from SEnsambles Where FEN_CODEPARTE <> ''$$$$$$$$$$'' and FEN_CODIGO = ''' + Plantilla + ''' ';
-  if (Componente <> '') or (Lote <> '') then
-    qrConsulta.SQL.Text := qrConsulta.SQL.Text +
-      ' and FEN_CODEPARTE = ''' + Componente +
-      ''' and FEN_CODEPRESENTA = ''' + Lote + '''';
+  try
+    qrConsulta.Close;
+    qrConsulta.SQL.Text :=
+      'Delete from SEnsambles Where FEN_CODEPARTE <> ''$$$$$$$$$$'' and FEN_CODIGO = ''' + Plantilla + ''' ';
+    if (Componente <> '') or (Lote <> '') then
+      qrConsulta.SQL.Text := qrConsulta.SQL.Text +
+        ' and FEN_CODEPARTE = ''' + Componente +
+        ''' and FEN_CODEPRESENTA = ''' + Lote + '''';
 
-  qrConsulta.ExecSQL;
+    qrConsulta.ExecSQL;
 
-except
-  on E: Exception do
-    ShowMessage('Ocurrió un error borrando componentes.');
+  except
+    on E: Exception do
+      ShowMessage('Ocurrió un error borrando componentes.');
+  end;
 end;
+
+procedure TdmDatos.BuscarApatados;
+begin
+  qrApartadosNuevos.Close;
+  qrApartadosNuevos.Open;
+  if qrApartadosNuevos.RecordCount > 0 then
+  begin
+    ShowMessage('Hay registros pendientes de procesar. ' + IntToStr( qrApartadosNuevos.RecordCount));
+  end;
 end;
 
 procedure TdmDatos.CargarCostosPlantilla(Codigo: string);
@@ -1026,9 +1063,9 @@ begin
   try
     AbrirArchivosParaOrdenes;
 
-    // Inserta la orden en SEnsambleOrden 
+    // Inserta la orden en SEnsambleOrden
     SEnsamblesOrden.Append;
-    SEnsamblesOrdenFEO_DOCUMENTO.Value :=                               
+    SEnsamblesOrdenFEO_DOCUMENTO.Value :=
       dmAdministrativo.GenerarConsecutivo('NO_ORDENENSAMBLE');
     SEnsamblesOrdenFEO_FECHAEMISION.Value := Now;
     SEnsamblesOrdenFEO_FECHAENTREGA.Value := FechaEntrega;
@@ -1053,7 +1090,7 @@ begin
 
     SEnsamblesOrden.Post;
 
-    // Inserta el traslado en SOperacionInv 
+    // Inserta el traslado en SOperacionInv
     SOperacionInv.Append;
     SOperacionInvFTI_DOCUMENTO.Value :=
       dmAdministrativo.GenerarConsecutivo('NO_TRANSFERENCIAS');
@@ -1079,7 +1116,7 @@ begin
     SOperacionInvFTI_DOCUMENTOORIGEN.Value := SEnsamblesOrdenFEO_DOCUMENTO.Value;
     SOperacionInvFTI_MACHINENAME.Value := NombreComputador;
     SOperacionInvFTI_HORA.Value := Now;
-    SOperacionInvFTI_TOTALCOSTO.Value := 
+    SOperacionInvFTI_TOTALCOSTO.Value :=
       SEnsamblesOrdenFEO_COSTOINICIAL.
       Value;
     SOperacionInvFTI_TOTALCOSTOREAL.Value :=
@@ -1089,11 +1126,11 @@ begin
 
     SOperacionInv.Post;
 
-    // Inserta el detalle de la orden 
+    // Inserta el detalle de la orden
     tbComponentes.First;
     while not tbComponentes.EOF do
     begin
-      // Inserta el detalle de la orden 
+      // Inserta el detalle de la orden
       SEnsamblesDetalle.Append;
       SEnsamblesDetalleFED_DOCUMENTO.Value := SEnsamblesOrdenFEO_DOCUMENTO.Value;
       SEnsamblesDetalleFED_PRODUCTO.Value := tbComponentesCodigo.Value;
@@ -1113,7 +1150,7 @@ begin
       SEnsamblesDetalleFED_EXISTENCIADETALLE.Value := 0;
       SEnsamblesDetalleFED_EXISTENCIA.Value := tbComponentesExistencia.Value;
       SEnsamblesDetalle.Post;
-      
+
       // ACtualia el inventario si lo mueve
       if tbComponentesClasificacion.Value <> integer(tciServicios) then
       begin
@@ -1149,7 +1186,7 @@ begin
         SDetalleInvFDI_OPERACION_AUTOINCREMENT.Value := SOperacionInvFTI_AUTOINCREMENT.Value;
         SDetalleInv.Post;
 
-        // Busca en SInvDep el registro, si no existe lo inserta (Origen) 
+        // Busca en SInvDep el registro, si no existe lo inserta (Origen)
         if not SinvDep.Locate(
           'FT_TIPO;FT_CODIGOPRODUCTO;FT_CODIGODEPOSITO;FT_LOTE;FT_LOTEAUTOINCREMENT'
             , VarArrayOf([4, tbComponentesCodigo.Value,
@@ -1196,22 +1233,217 @@ begin
         SinvDep.Post;
 
       end;
-              
+
       tbComponentes.Next;
     end;
-    
+
     ShowMessage('Se generó la orden número: ' + SEnsamblesOrdenFEO_DOCUMENTO.Value);
 
-    // Borra los componentes 
+    // Borra los componentes
     tbComponentes.Close;
 
-    // Recarga la consulta de los pedidos 
+    // Recarga la consulta de los pedidos
     qrPedidosPendientes.Close;
 
   except
     on E: Exception do
       ShowMessage('Ocurrio un error generando la orden. ' + E.Message);
   end;
+end;
+
+procedure TdmDatos.GenerarOrdenDesdeApartado(Apartado, Plantilla,
+  Responsable: string; FechaEntrega: TDateTime; Cantidad: double);
+begin
+  try
+    AbrirArchivosParaOrdenes;
+
+    // Inserta la orden en SEnsambleOrden
+    SEnsamblesOrden.Append;
+    SEnsamblesOrdenFEO_DOCUMENTO.Value :=
+      dmAdministrativo.GenerarConsecutivo('NO_ORDENENSAMBLE');
+    SEnsamblesOrdenFEO_FECHAEMISION.Value := Now;
+    SEnsamblesOrdenFEO_FECHAENTREGA.Value := FechaEntrega;
+    SEnsamblesOrdenFEO_HORAEMISION.Value := Now;
+    SEnsamblesOrdenFEO_NOORDENCOMPRA.Value := Apartado;
+    SEnsamblesOrdenFEO_CANTIDADORDEN.Value := Cantidad;
+    SEnsamblesOrdenFEO_CODEPRODUCTO.Value := Plantilla;
+    SEnsamblesOrdenFEO_STATUS.Value := 4;
+    SEnsamblesOrdenFEO_OTROCOSTO1.Value := 0;
+    SEnsamblesOrdenFEO_OTROCOSTO1PORCENT.Value := 0;
+    SEnsamblesOrdenFEO_OTROCOSTO2.Value := 0;
+    SEnsamblesOrdenFEO_OTROCOSTO2PORCENT.Value := 0;
+    SEnsamblesOrdenFEO_OTROCOSTO3.Value := 0;
+    SEnsamblesOrdenFEO_OTROCOSTO3PORCENT.Value := 0;
+    SEnsamblesOrdenFEO_DETALLE.Value := '';
+    SEnsamblesOrdenFEO_USUARIO.Value := Usuario;
+    SEnsamblesOrdenFEO_COMPUTERNAME.Value := NombreComputador;
+    SEnsamblesOrdenFEO_CLASIFICACODE.Value := 1;
+    SEnsamblesOrdenFEO_NOITEMSINICIO.Value := tbComponentes.RecordCount;
+    SEnsamblesOrdenFEO_RESPONSABLE.Value := Responsable;
+    SEnsamblesOrdenFEO_COSTOINICIAL.Value := CostoPlantilla(tpcTemporal);
+
+    SEnsamblesOrden.Post;
+
+    // Inserta el traslado en SOperacionInv
+    SOperacionInv.Append;
+    SOperacionInvFTI_DOCUMENTO.Value :=
+      dmAdministrativo.GenerarConsecutivo('NO_TRANSFERENCIAS');
+    SOperacionInvFTI_TIPO.Value := integer(toiTraslados);
+    SOperacionInvFTI_STATUS.Value := 1;
+    SOperacionInvFTI_VISIBLE.Value := true;
+    SOperacionInvFTI_FECHAEMISION.Value := Now;
+    SOperacionInvFTI_DEPOSITOSOURCE.Value := StrToInt
+      (dmAdministrativo.SSistemaDEPOSITO_ENSAMBLE.Value);
+    SOperacionInvFTI_DEPOSITODESTINO.Value := StrToInt
+      (dmAdministrativo.SSistemaDEPOSITO_ENSAMBLETRANSITO.Value);
+    SOperacionInvFTI_TOTALITEMS.Value := tbComponentes.RecordCount;
+    SOperacionInvFTI_TOTALITEMSINICIAL.Value :=
+      tbComponentes.RecordCount;
+    SOperacionInvFTI_MONEDA.Value := 1;
+    SOperacionInvFTI_FACTORCAMBIO.Value := 1;
+    SOperacionInvFTI_CLASIFICACION.Value := StrToInt
+      (dmAdministrativo.SSistemaCLASIFICA_ENSAMBLETRASLADO.Value);
+    SOperacionInvFTI_USER.Value := SPAOrdenesConfiguracionUsuario.Value;
+    SOperacionInvFTI_RESPONSABLE.Value := Responsable;
+    SOperacionInvFTI_TIENELOTES.Value := true;
+    SOperacionInvFTI_UPDATEITEMS.Value := true;
+    SOperacionInvFTI_DOCUMENTOORIGEN.Value := SEnsamblesOrdenFEO_DOCUMENTO.Value;
+    SOperacionInvFTI_MACHINENAME.Value := NombreComputador;
+    SOperacionInvFTI_HORA.Value := Now;
+    SOperacionInvFTI_TOTALCOSTO.Value :=
+      SEnsamblesOrdenFEO_COSTOINICIAL.
+      Value;
+    SOperacionInvFTI_TOTALCOSTOREAL.Value :=
+      SEnsamblesOrdenFEO_COSTOINICIAL.Value;
+    SOperacionInvFTI_DESCRIPCLASIFY.Value := Clasificacion
+      (SOperacionInvFTI_CLASIFICACION.Value);
+
+    SOperacionInv.Post;
+
+    // Inserta el detalle de la orden
+    tbComponentes.First;
+    while not tbComponentes.EOF do
+    begin
+      // Inserta el detalle de la orden
+      SEnsamblesDetalle.Append;
+      SEnsamblesDetalleFED_DOCUMENTO.Value := SEnsamblesOrdenFEO_DOCUMENTO.Value;
+      SEnsamblesDetalleFED_PRODUCTO.Value := tbComponentesCodigo.Value;
+      SEnsamblesDetalleFED_CODEPRINCIPAL.Value := Plantilla;
+      SEnsamblesDetalleFED_FECHAEMISION.Value := SEnsamblesOrdenFEO_FECHAEMISION.Value;
+      SEnsamblesDetalleFED_STATUS.Value := 4;
+      SEnsamblesDetalleFED_CANTIDAD.Value := tbComponentesCantidad.Value * Cantidad;
+      SEnsamblesDetalleFED_CANTIDADDESCARGA.Value := 1;
+      SEnsamblesDetalleFED_COSTOUNITARIO.Value := tbComponentesCosto.Value;
+      SEnsamblesDetalleFED_CODEPRESENTA.Value := tbComponentesLote.Value;
+      SEnsamblesDetalleFED_ORIGENAUTO.Value := 0;
+      SEnsamblesDetalleFED_FACTORPRESENTA.Value := 1;
+      SEnsamblesDetalleFED_CANTIDADCIERRE.Value := 0;
+      SEnsamblesDetalleFED_ESPRESENTA.Value := false;
+      SEnsamblesDetalleFED_TIPOOFERTA.Value := 0;
+      SEnsamblesDetalleFED_RANDOMOPERACION.Value := Random(10000000);
+      SEnsamblesDetalleFED_EXISTENCIADETALLE.Value := 0;
+      SEnsamblesDetalleFED_EXISTENCIA.Value := tbComponentesExistencia.Value;
+      SEnsamblesDetalle.Post;
+
+      // ACtualia el inventario si lo mueve
+      if tbComponentesClasificacion.Value <> integer(tciServicios) then
+      begin
+        // Inserta el traslado
+        SDetalleInv.Append;
+        SDetalleInvFDI_TIPOOPERACION.Value := integer(toiTraslados);
+        SDetalleInvFDI_CODIGO.Value := tbComponentesCodigo.Value;
+        SDetalleInvFDI_LINEA.Value := tbComponentes.RecNo - 1;
+        SDetalleInvFDI_DOCUMENTO.Value := SOperacionInvFTI_DOCUMENTO.Value;
+        SDetalleInvFDI_DOCUMENTOORIGEN.Value := SOperacionInvFTI_DOCUMENTOORIGEN.Value;
+        SDetalleInvFDI_CLASIFICACION.Value := SOperacionInvFTI_CLASIFICACION.Value;
+        SDetalleInvFDI_STATUS.Value := 1;
+        SDetalleInvFDI_VISIBLE.Value := true;
+        SDetalleInvFDI_COSTO.Value := tbComponentesCosto.Value;
+        SDetalleInvFDI_CANTIDAD.Value := tbComponentesCantidad.Value * Cantidad;
+        SDetalleInvFDI_LOTE.Value := tbComponentesLote.Value;
+        SDetalleInvFDI_LOTERANDOM.Value := tbComponentesRandom.Value;
+        SDetalleInvFDI_DEPOSITOSOURCE.Value := SOperacionInvFTI_DEPOSITOSOURCE.Value;
+        SDetalleInvFDI_DEPOSITOTARGET.Value := SOperacionInvFTI_DEPOSITODESTINO.Value;
+        SDetalleInvFDI_DECIMALES.Value := true;
+        SDetalleInvFDI_DECIMALESPEN.Value := true;
+        SDetalleInvFDI_SERIALNUMBER.Value := Random(1000000000);
+        SDetalleInvFDI_USASERIALES.Value := false;
+        SDetalleInvFDI_USADEPOSITOS.Value := true;
+        SDetalleInvFDI_COSTOOPERACION.Value := tbComponentesCosto.Value;
+        SDetalleInvFDI_MONEDA.Value := 1;
+        SDetalleInvFDI_FACTORCAMBIO.Value := 1;
+        SDetalleInvFDI_UNDDESCARGA.Value := 1;
+        SDetalleInvFDI_UNDCAPACIDAD.Value := 1;
+        SDetalleInvFDI_UNDDETALLADA.Value := false;
+        SDetalleInvFDI_FECHAOPERACION.Value := Now;
+        SDetalleInvFDI_USER.Value := SOperacionInvFTI_USER.Value;
+        SDetalleInvFDI_OPERACION_AUTOINCREMENT.Value := SOperacionInvFTI_AUTOINCREMENT.Value;
+        SDetalleInv.Post;
+
+        // Busca en SInvDep el registro, si no existe lo inserta (Origen)
+        if not SinvDep.Locate(
+          'FT_TIPO;FT_CODIGOPRODUCTO;FT_CODIGODEPOSITO;FT_LOTE;FT_LOTEAUTOINCREMENT'
+            , VarArrayOf([4, tbComponentesCodigo.Value,
+            SOperacionInvFTI_DEPOSITOSOURCE.Value,
+            tbComponentesLote.Value, tbComponentesRandom.Value]),
+          []) then
+        begin
+          SinvDep.Append;
+          SinvDepFT_EXISTENCIA.Value := 0;
+        end
+        else
+          SinvDep.Edit;
+
+        SinvDepFT_TIPO.Value := 4;
+        SinvDepFT_CODIGOPRODUCTO.Value := tbComponentesCodigo.Value;
+        SinvDepFT_CODIGODEPOSITO.Value := SOperacionInvFTI_DEPOSITOSOURCE.Value;
+        SinvDepFT_LOTE.Value := tbComponentesLote.Value;
+        SinvDepFT_LOTEAUTOINCREMENT.Value := tbComponentesRandom.Value;
+        SinvDepFT_EXISTENCIA.Value := SinvDepFT_EXISTENCIA.Value - tbComponentesCantidad.Value * Cantidad;
+        SinvDepFT_VISIBLE.Value := true;
+        SinvDep.Post;
+
+        // Busca en SInvDep el registro, si no existe lo inserta (Destino)
+        if not SinvDep.Locate(
+          'FT_TIPO;FT_CODIGOPRODUCTO;FT_CODIGODEPOSITO;FT_LOTE;FT_LOTEAUTOINCREMENT'
+            , VarArrayOf([4, tbComponentesCodigo.Value,
+            SOperacionInvFTI_DEPOSITODESTINO.Value,
+            tbComponentesLote.Value, tbComponentesRandom.Value]), [])
+          then
+        begin
+          SinvDep.Append;
+          SinvDepFT_EXISTENCIA.Value := 0;
+        end
+        else
+          SinvDep.Edit;
+
+        SinvDepFT_TIPO.Value := 4;
+        SinvDepFT_CODIGOPRODUCTO.Value := tbComponentesCodigo.Value;
+        SinvDepFT_CODIGODEPOSITO.Value := SOperacionInvFTI_DEPOSITODESTINO.Value;
+        SinvDepFT_LOTE.Value := tbComponentesLote.Value;
+        SinvDepFT_LOTEAUTOINCREMENT.Value := tbComponentesRandom.Value;
+        SinvDepFT_EXISTENCIA.Value := SinvDepFT_EXISTENCIA.Value + tbComponentesCantidad.Value * Cantidad;
+        SinvDepFT_VISIBLE.Value := true;
+        SinvDep.Post;
+
+      end;
+
+      tbComponentes.Next;
+    end;
+
+//    ShowMessage('Se generó la orden número: ' + SEnsamblesOrdenFEO_DOCUMENTO.Value);
+
+    // Borra los componentes
+    tbComponentes.Close;
+
+    // Recarga la consulta de los pedidos
+    qrPedidosPendientes.Close;
+
+  except
+    on E: Exception do
+      ShowMessage('Ocurrio un error generando la orden. ' + E.Message);
+  end;
+
 end;
 
 procedure TdmDatos.GuardarRecalculo(Codigo: String;

@@ -352,7 +352,6 @@ object frGenerarOrden: TfrGenerarOrden
   end
   object dsComponetes: TDataSource
     AutoEdit = False
-    DataSet = dmDatos.tbComponentes
     Left = 568
     Top = 24
   end

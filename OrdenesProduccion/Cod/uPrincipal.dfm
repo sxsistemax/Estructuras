@@ -2,7 +2,7 @@ object frPrincipal: TfrPrincipal
   Left = 0
   Top = 0
   Caption = 'Configuraci'#243'n Ordenes de Producci'#243'n'
-  ClientHeight = 98
+  ClientHeight = 123
   ClientWidth = 604
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object frPrincipal: TfrPrincipal
     Left = 0
     Top = 0
     Width = 604
-    Height = 63
+    Height = 72
     Align = alClient
     BevelInner = bvLowered
     TabOrder = 0
@@ -44,17 +44,17 @@ object frPrincipal: TfrPrincipal
   end
   object Panel2: TPanel
     Left = 0
-    Top = 63
+    Top = 72
     Width = 604
-    Height = 35
+    Height = 51
     Align = alBottom
     BevelOuter = bvNone
     Caption = '`'
     TabOrder = 1
     object pAcciones: TActionToolBar
       AlignWithMargins = True
-      Left = 3
-      Top = 3
+      Left = 4
+      Top = 6
       Width = 355
       Height = 51
       ActionManager = ActionManager1
@@ -68,6 +68,7 @@ object frPrincipal: TfrPrincipal
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = []
+      Orientation = boTopToBottom
       ParentFont = False
       Spacing = 0
     end
@@ -75,11 +76,10 @@ object frPrincipal: TfrPrincipal
       Left = 264
       Top = 0
       Width = 340
-      Height = 35
+      Height = 51
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = -4
       object btCancelar: TBitBtn
         Left = 178
         Top = 6

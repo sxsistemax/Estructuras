@@ -9,6 +9,9 @@
 			<Projects Include="OrdenesProduccion\Cod\SPAOrdenesDeProduccion.dproj">
 				<Dependencies/>
 			</Projects>
+			<Projects Include="OrdenesProduccion\Cod\SPARevisarApartadosPedientes.dproj">
+				<Dependencies/>
+			</Projects>
 		</ItemGroup>
 		<ProjectExtensions>
 			<Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
 		<Target Name="SPAOrdenesDeProduccion:Make">
 			<MSBuild Targets="Make" Projects="OrdenesProduccion\Cod\SPAOrdenesDeProduccion.dproj"/>
 		</Target>
+		<Target Name="SPARevisarApartadosPedientes">
+			<MSBuild Projects="OrdenesProduccion\Cod\SPARevisarApartadosPedientes.dproj"/>
+		</Target>
+		<Target Name="SPARevisarApartadosPedientes:Clean">
+			<MSBuild Targets="Clean" Projects="OrdenesProduccion\Cod\SPARevisarApartadosPedientes.dproj"/>
+		</Target>
+		<Target Name="SPARevisarApartadosPedientes:Make">
+			<MSBuild Targets="Make" Projects="OrdenesProduccion\Cod\SPARevisarApartadosPedientes.dproj"/>
+		</Target>
 		<Target Name="Build">
-			<CallTarget Targets="SPAMigrarEstructuras;SPAOrdenesDeProduccion"/>
+			<CallTarget Targets="SPAMigrarEstructuras;SPAOrdenesDeProduccion;SPARevisarApartadosPedientes"/>
 		</Target>
 		<Target Name="Clean">
-			<CallTarget Targets="SPAMigrarEstructuras:Clean;SPAOrdenesDeProduccion:Clean"/>
+			<CallTarget Targets="SPAMigrarEstructuras:Clean;SPAOrdenesDeProduccion:Clean;SPARevisarApartadosPedientes:Clean"/>
 		</Target>
 		<Target Name="Make">
-			<CallTarget Targets="SPAMigrarEstructuras:Make;SPAOrdenesDeProduccion:Make"/>
+			<CallTarget Targets="SPAMigrarEstructuras:Make;SPAOrdenesDeProduccion:Make;SPARevisarApartadosPedientes:Make"/>
 		</Target>
 		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 	</Project>

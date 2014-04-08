@@ -63,7 +63,7 @@ procedure GenerarOrdenes;
 implementation
 
 uses uSeleccionarPedidos, uDatos, uAdicionarComponente, uUtilidades,
-  uRecalcular;
+  uRecalcular, uUtilidadesSPA;
 
 {$R *.dfm}
 
@@ -107,6 +107,12 @@ end;
 
 procedure TfrGenerarOrden.aGenerarOrdenExecute(Sender: TObject);
 begin
+  if ModoDemo then
+  begin
+    ShowMessage('Esta opción no esta habilitada en modo demo');
+    exit;
+  end;
+
   dmDatos.GenerarOrden(ePedido.Text, ePlantilla.Text, lCliente.Caption, eFechaEntrega.Date, StrToFloat( eCantidad.Text));
 
   ePlantilla.Text := '';
@@ -133,6 +139,7 @@ begin
     lDescripcion.Caption := dmDatos.qrConsulta.FieldByName('Descripcion').Value;
     eCantidad.Text := dmDatos.qrConsulta.FieldByName('Cantidad').AsString;
     lVendedor.Caption := dmDatos.qrConsulta.FieldByName('Vendedor').AsString;
+    eFechaEntrega.Date := dmDAtos.qrConsulta.FieldByName('FechaVencimiento').AsDateTime;
     dmDatos.CargarTablaComponentes(ePlantilla.Text);
   end;
 end;

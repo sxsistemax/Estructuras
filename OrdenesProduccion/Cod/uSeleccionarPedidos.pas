@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, MantenimientoSPA, DB, JvComponentBase, JvEnterTab, DBCtrls, ExtCtrls,
   StdCtrls, JvExStdCtrls, JvEdit, JvDBSearchEdit, Grids, DBGrids, ComCtrls,
-  Buttons;
+  Buttons, JvFormPlacement, JvAppStorage, JvAppRegistryStorage;
 
 type
   TfrSeleccionarPedido = class(TfmBaseMantenimiento)

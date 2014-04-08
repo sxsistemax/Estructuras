@@ -102,7 +102,9 @@ inherited frSeleccionarPedido: TfrSeleccionarPedido
       end
     end
     inherited tsRegistro: TTabSheet
-      ExplicitWidth = 715
+      ExplicitLeft = 4
+      ExplicitTop = 27
+      ExplicitWidth = 801
       ExplicitHeight = 222
       inherited Bevel1: TBevel
         Width = 801

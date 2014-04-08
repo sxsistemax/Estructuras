@@ -1,6 +1,6 @@
 object dmDatos: TdmDatos
   OldCreateOrder = False
-  Height = 417
+  Height = 468
   Width = 521
   object SEnsambles: TDBISAMTable
     DatabaseName = 'dbA2'
@@ -1749,8 +1749,8 @@ object dmDatos: TdmDatos
         Name = 'TipoInventario'
         DataType = ftInteger
       end>
-    Left = 384
-    Top = 224
+    Left = 328
+    Top = 232
     object tbComponentesCodigo: TStringField
       DisplayWidth = 20
       FieldName = 'Codigo'
@@ -1803,8 +1803,8 @@ object dmDatos: TdmDatos
   end
   object tbPlantillas: TJvMemoryData
     FieldDefs = <>
-    Left = 384
-    Top = 272
+    Left = 328
+    Top = 280
     object tbPlantillasCosto: TFloatField
       FieldName = 'Costo'
     end
@@ -1863,5 +1863,43 @@ object dmDatos: TdmDatos
     OnCancel = pdProgreso1Cancel
     Left = 296
     Top = 168
+  end
+  object SpaApartadosOrdenes: TDBISAMTable
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    TableName = 'SpaApartadosOrdenes'
+    Left = 136
+    Top = 240
+    object SpaApartadosOrdenesApartado: TStringField
+      FieldName = 'Apartado'
+      Size = 15
+    end
+    object SpaApartadosOrdenesOrden: TStringField
+      FieldName = 'Orden'
+      Size = 15
+    end
+  end
+  object qrApartadosNuevos: TDBISAMQuery
+    DatabaseName = 'dbA2'
+    EngineVersion = '4.29 Build 1'
+    SQL.Strings = (
+      'SELECT '
+      '  SOperacionInv.FTI_DOCUMENTO'
+      'FROM'
+      ' SOperacionInv'
+      
+        ' LEFT OUTER JOIN SpaApartadosOrdenes ON (SOperacionInv.FTI_DOCUM' +
+        'ENTO=SpaApartadosOrdenes.Apartado)'
+      'WHERE'
+      '  (SOperacionInv.FTI_TIPO = 9) AND '
+      '  (SpaApartadosOrdenes.Orden IS NULL) AND '
+      '  (SOperacionInv.FTI_STATUS = 1)')
+    Params = <>
+    Left = 48
+    Top = 408
+    object qrApartadosNuevosFTI_DOCUMENTO: TStringField
+      FieldName = 'FTI_DOCUMENTO'
+      Size = 15
+    end
   end
 end

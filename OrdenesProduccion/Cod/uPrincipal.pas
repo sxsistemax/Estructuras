@@ -46,7 +46,8 @@ var
 implementation
 
 uses uUtilidadesSPA, uBaseDatosA2, uPlantillas, uDatos,
-  uTablasConBlobAdministrativo, uGenerarOrden, uProcesarCostosPlantillas, OnGuard;
+  uTablasConBlobAdministrativo, uGenerarOrden, uProcesarCostosPlantillas, OnGuard,
+  uApartadosPendientes;
 
 Const
   IdentificadorAplicacion : TKey = ($53,$71,$23,$01,$CE,$CE,$85,$96,$58,$36,$E6,$2E,$87,$C6,$77,$98);
@@ -108,7 +109,7 @@ procedure TfrPrincipal.FormCreate(Sender: TObject);
 begin
   CargarDatosAplicaion;
 
-  ModoDemo := False;
+  ModoDemo := True;
 
   ValidarRegistro(ModoDemo);
 
@@ -127,6 +128,7 @@ begin
     dmDatos.AbrirSFixed;
     dmDatos.AbrirUsuarios;
     dmDatos.AbrirConfiguracion;
+    dmDatos.AbrirApartadosOrdenes;
 
     dsConfiguracion.DataSet := dmDatos.SPAOrdenesConfiguracion;
  End

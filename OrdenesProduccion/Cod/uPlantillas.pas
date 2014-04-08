@@ -8,7 +8,7 @@ uses
   StdCtrls, JvExStdCtrls, JvEdit, JvDBSearchEdit, Grids, DBGrids, ComCtrls,
   Buttons, Mask, JvGroupBox, JvMemoryDataset, ActnList, Menus, uUtilidades,
   JvBDEFilter, JvGridFilter, JvExMask, JvToolEdit, JvMaskEdit, JvDBFindEdit,
-  ImgList;
+  ImgList, JvFormPlacement, JvAppStorage, JvAppRegistryStorage;
 
 type
   TfrPlantillas = class(TfmBaseMantenimiento)
